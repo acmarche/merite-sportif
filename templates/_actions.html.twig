@@ -1,0 +1,58 @@
+<a href="{{ url_back }}" class="btn btn-primary" role='button'><i class="fas fa-list"></i>
+    {{ 'back.to.list'|trans({}, 'actions') }}
+</a>
+
+
+{% if entry.periodicity %}
+    {# EDIT #}
+    {% if is_granted('grr.entry.edit', entry) %}
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                <i class="far fa-edit"></i> {{ 'form.btn.edit.label'|trans({}, 'actions') }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+                <a href="{{ path('grr_front_entry_edit', { 'id': entry.id }) }}" role="button"
+                   class="dropdown-item"> {{ 'form.btn.edit.entry'|trans({}, 'actions') }}</a>
+
+                <a href="{{ path('grr_front_periodicity_edit', { 'id': entry.id }) }}" role="button"
+                   class="dropdown-item"> {{ 'form.btn.edit.periodicity'|trans({}, 'actions') }}</a>
+
+            </div>
+        </div>
+    {% endif %}
+
+    {% if is_granted('grr.entry.delete', entry) %}
+        {# DELETE #}
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-trash"></i> {{ 'form.btn.delete.label'|trans({}, 'actions') }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <button class="dropdown-item" data-toggle="modal" data-target="#deleteModal">
+                    {{ 'form.btn.delete.entry'|trans({}, 'actions') }}
+                </button>
+                <button class="dropdown-item" data-toggle="modal" data-target="#deleteModalPeriodicity">
+                    {{ 'form.btn.delete.periodicity'|trans({}, 'actions') }}
+                </button>
+            </div>
+        </div>
+    {% endif %}
+{% else %}
+    {% if is_granted('grr.entry.edit', entry) %}
+        <a href="{{ path('grr_front_entry_edit', { 'id': entry.id }) }}" role="button"
+           class="btn btn-primary"><i class="far fa-edit"></i> {{ 'form.btn.edit.label'|trans({}, 'actions') }}</a>
+
+    {% endif %}
+    {% if is_granted('grr.entry.delete', entry) %}
+        <a href="{{ url_back }}" class="btn btn-danger" role='button' data-toggle="modal" data-target="#deleteModal"><i
+                    class="fas fa-trash"></i>
+            {{ 'form.btn.delete.label'|trans({}, 'actions') }}
+        </a>
+    {% endif %}
+{% endif %}
+
+<br/>
+<br/>

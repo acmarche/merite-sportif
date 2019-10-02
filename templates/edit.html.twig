@@ -1,0 +1,37 @@
+{% extends '@grr_front/layout_front.html.twig' %}
+
+{% block title %}{{ 'action.edit'|trans({},'actions') }} {{ entry.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h2>{{ entry.name }}</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                    {% include '@grr_front/entry/form/_form_entry.html.twig' %}
+                    <button class="btn btn-primary" type="submit"><i
+                                class="far fa-save"></i> {{ 'form.btn.save'|trans({}, 'actions') }}</button>
+                    {{ form_end(form) }}
+                </div>
+                <div class="col-6">
+                    {% include '@grr_front/periodicity/_show.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+    <a href="{{ path('grr_front_entry_show',{'id': entry.id}) }}"><i
+                class="fas fa-arrow-left"></i> {{ 'form.btn.cancel'|trans({}, 'actions') }}</a>
+
+{% endblock %}
+{% block scripts %}
+    <script src="{{ asset('js/periodicity_options_weeks.js') }}"></script>
+    <script src="{{ asset('js/full_day.js') }}"></script>
+    {% include '@grr_front/_select_room_js.html.twig' with {'isRestricted' : true} %}
+{% endblock %}

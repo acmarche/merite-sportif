@@ -1,0 +1,26 @@
+<!-- Modal entry -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">{{ 'modal.delete.title'|trans({}, 'actions') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ 'entry.delete.confirm'|trans({'name': entry.name}, 'actions') }}
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="{{ path('grr_front_entry_delete', {'id': entry.id}) }}">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entry.id) }}">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{{ 'form.btn.cancel'|trans({}, 'actions') }}</button>
+                    <button type="submit" class="btn btn-danger">{{ 'form.btn.delete.label'|trans({}, 'actions') }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

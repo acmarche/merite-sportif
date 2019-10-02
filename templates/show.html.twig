@@ -1,0 +1,73 @@
+{% extends '@grr_front/layout_front.html.twig' %}
+
+{% block title %}{{ entry.name }}{% endblock %}
+
+{% block body %}
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h2>{{ entry.name }}</h2>
+        </div>
+        <div class="card-body">
+
+            {% include '@grr_front/entry/_actions.html.twig' %}
+
+            <div class="row">
+                <div class="col-6">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th>{{ 'entry.form.startTime.label'|trans }}</th>
+                            <td>
+                                {{ entry.startTime |date('d-m-Y H:i') }}
+                                {# 2.12 { entry.startTime|format_datetime('full', 'full') }#}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'entry.form.endTime.label'|trans }}</th>
+                            <td>{{ entry.endTime |date('d-m-Y H:i') }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'entry.form.area.label'|trans }}</th>
+                            <td>{{ entry.room.area }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'entry.form.room.label'|trans }}</th>
+                            <td>{{ entry.room }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'entry.form.type.label'|trans }}</th>
+                            <td>{{ entry.type }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'entry.form.statutEntry.label'|trans }}</th>
+                            <td>{{ entry.statutEntry }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'entry.form.beneficiaireExt.label'|trans }}</th>
+                            <td>{{ entry.beneficiaireExt }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'entry.form.beneficiaire.label'|trans }}</th>
+                            <td>{{ entry.beneficiaire }}</td>
+                        </tr>
+                    </table>
+
+                    {{ entry.description|nl2br }}
+                </div>
+                <div class="col-6">
+                    {% include '@grr_front/periodicity/_show.html.twig' %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <p class="text-muted">
+                {{ 'entry.form.createBy.label'|trans }} {{ entry.createdBy }}
+                {{ 'created.at'|trans }} {{ entry.createdAt | date('m-d-Y H:i') }}
+            </p>
+        </div>
+    </div>
+
+    {{ include('@grr_front/entry/_delete_form.html.twig') }}
+    {{ include('@grr_front/periodicity/_delete_form.html.twig') }}
+{% endblock %}

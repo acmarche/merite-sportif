@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Mérite sportif{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    {% block stylesheets %}{% endblock %}
+
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://kit.fontawesome.com/50e40e2735.js" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    {% block head_scripts %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top border-bottom shadow-sm">
+    {% block brand %}
+        <a class="navbar-brand" href="{{ path('merite_home') }}">Mérite sportif</a>
+    {% endblock %}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsleDefault"
+            aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-md-center" id="navbarsDefault">
+        <ul class="navbar-nav mr-auto ml-auto">
+            {% block menu_top %}
+            {% endblock %}
+        </ul>
+        <ul class="navbar-nav">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% block menu_user %}
+                    {% include '_menu_user.html.twig' %}
+                {% endblock %}
+            {% else %}
+                <li class="nav-item">
+                    <a href="{{ path('app_login') }}" class="nav-link" title="Me connecter"><i
+                                class="fas fa-sign-in-alt"></i></a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<main role="main" class="container-fluid pt-3">
+
+    {% include '_flash_messages.html.twig' %}
+
+    {% block body %}
+
+    {% endblock %}
+</main>
+
+{% block footer %}
+    <footer class="mb-5 hidden-print">
+
+    </footer>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+{% block scripts %}
+
+{% endblock %}
+</body>
+</html>
+

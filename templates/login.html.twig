@@ -1,0 +1,84 @@
+{% extends '@grr_front/layout_front.html.twig' %}
+
+{% block title %}{{ 'login.title'|trans() }}{% endblock %}
+{% block stylesheets %}
+
+    <link href="{{ asset('css/signin.css') }}" rel="stylesheet">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="text-center">
+
+        <div class="w-75 m-auto">
+
+            {% if title %}
+                <h2>{{ title }}</h2>
+            {% endif %}
+
+            {% if compagny %}
+                {{ compagny }}
+            {% endif %}
+
+            {% if message %}
+                <div class="alert alert-info">
+                    {{ message }}
+                </div>
+            {% endif %}
+
+        </div>
+
+        <form class="form-signin" method="post" action="{{ path('app_login') }}">
+            <img class="mb-4 img-fluid" title="Grr" src="{{ asset('totem_grr.png') }}" alt="logo" width="72">
+            <h1 class="h3 mb-3 font-weight-normal">{{ 'login.title'|trans() }}</h1>
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <label for="inputEmail"
+                   class="sr-only">{{ 'login.form.username.label'|trans() }}</label>
+            <input type="text" name="username" value="{{ last_username }}" id="inputEmail" class="form-control"
+                   placeholder="{{ 'login.form.username.placeholder'|trans }}" required autofocus>
+            <label for="inputPassword"
+                   class="sr-only">{{ 'login.form.password.label'|trans() }}</label>
+            <input name="password" type="password" id="inputPassword" class="form-control"
+                   placeholder="{{ 'login.form.password.placeholder'|trans() }}" required>
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox"
+                           value="remember-me"> {{ 'login.remember.me'|trans() }}
+                </label>
+            </div>
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+            >
+            <button class="btn btn-lg btn-primary btn-block"
+                    type="submit"><i class="fas fa-sign-in-alt"></i> {{ 'btn.login'|trans() }}</button>
+        </form>
+    </div>
+    {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+    #}
+
+{% endblock %}

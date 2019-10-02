@@ -1,0 +1,47 @@
+{% extends 'layout_front.html.twig' %}
+
+{% block body %}
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+
+            <div class="row">
+                <div class="col-8">
+                    <h3>Liste des candidats</h3>
+                </div>
+                <div class="col-4">
+                    <a class="float-right btn btn-primary" href="{{ path('candidat_new') }}">
+                        <i class="fas fa-plus"></i> Ajouter</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Catégorie(s)</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for candidat in candidats %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('candidat_show', {'id': candidat.id}) }}">
+                                {{ candidat.nom }}</a>
+                        </td>
+                        <td>{{ candidat.prenom }}</td>
+                        <td>{{ candidat.categories|length }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
