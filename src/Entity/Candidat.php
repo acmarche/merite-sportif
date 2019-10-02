@@ -43,6 +43,12 @@ class Candidat
      */
     private $categories;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Sport", inversedBy="candidats")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $sport;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -128,6 +134,18 @@ class Candidat
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
         }
+
+        return $this;
+    }
+
+    public function getSport(): ?Sport
+    {
+        return $this->sport;
+    }
+
+    public function setSport(?Sport $sport): self
+    {
+        $this->sport = $sport;
 
         return $this;
     }
