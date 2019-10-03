@@ -34,7 +34,8 @@
                 {% for candidatField in form.candidats %}
                     {% set candidatId = candidatField.vars.value %}
                     <li class="list-group-item" id="candidats-{{ candidatId }}">
-                       <i class="fas fa-arrows-alt-v"></i> <div class="w-75 float-left">
+                        <i class="fas fa-arrows-alt-v"></i>
+                        <div class="w-75 float-left">
                             {{ form_errors(candidatField) }}
                             {{ form_widget(candidatField) }}
                         </div>
@@ -77,8 +78,7 @@
                         type: "post",
                         data: serial,
                         success: function (html) {
-                            $('#success').append(html);
-                            $('#success').fadeIn(500);
+                            $('#vote_positions').val(html);
                         },
                         error: function () {
                             alert("Oups le tri ne s'est pas enregistré");

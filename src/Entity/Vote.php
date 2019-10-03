@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Doctrine\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Vote
 {
+    use TimestampableTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -38,6 +41,15 @@ class Vote
      * @ORM\Column(type="smallint")
      */
     private $position;
+
+    public function __construct(Categorie $categorie, Club $club, Candidat $candidat)
+    {
+        $this->categorie = $categorie;
+        $this->club = $club;
+        $this->candidat = $candidat;
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {

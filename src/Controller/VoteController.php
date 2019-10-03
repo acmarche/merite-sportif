@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Candidat;
 use App\Entity\Vote;
 use App\Form\VoteType;
 use App\Repository\CandidatRepository;
 use App\Repository\CategorieRepository;
+use App\Repository\ClubRepository;
 use App\Repository\VoteRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,11 +28,25 @@ class VoteController extends AbstractController
      * @var CandidatRepository
      */
     private $candidatRepository;
+    /**
+     * @var ClubRepository
+     */
+    private $clubRepository;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
 
-    public function __construct(CategorieRepository $categorieRepository, CandidatRepository $candidatRepository)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        CategorieRepository $categorieRepository,
+        CandidatRepository $candidatRepository,
+        ClubRepository $clubRepository
+    ) {
         $this->categorieRepository = $categorieRepository;
         $this->candidatRepository = $candidatRepository;
+        $this->clubRepository = $clubRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -40,7 +57,7 @@ class VoteController extends AbstractController
         return $this->render(
             'vote/index.html.twig',
             [
-                'votes' => $voteRepository->findAll(),
+                'votes' => $voteRepository->getAll(),
             ]
         );
     }
@@ -63,6 +80,7 @@ class VoteController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $club = $this->clubRepository->find(1);
         $categorie = $this->categorieRepository->find(1);
         $candidats = $categorie->getCandidats();
         $data = [];
@@ -72,12 +90,29 @@ class VoteController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            dump($form->getData());
+            $data = $form->getData();
+            $positions = explode('|', $data['positions']);
+            /**
+             * @var Candidat[] $candidats
+             */
+            $candidats = $data['candidats'];
+            foreach ($candidats as $candidat) {
 
-            //$entityManager->persist($vote);
-            //$entityManager->flush();
+                $vote = new Vote($categorie, $club, $candidat);
+                if (is_array($positions)) {
+                    $key = array_search($candidat->getId(), $positions);
+                    if ($key !== null) {
+                        dump($key);
+                        $vote->setPosition($key);
+                    }
+                }
+                $this->entityManager->persist($vote);
+            }
 
-            //  return $this->redirectToRoute('vote_index');
+            $this->entityManager->flush();
+            $this->addFlash('success', 'Votre vote a bien été pris en compte');
+
+            return $this->redirectToRoute('vote_index');
         }
 
         return $this->render(
@@ -131,27 +166,22 @@ class VoteController extends AbstractController
      */
     public function trier(Request $request): Response
     {
-
+        $positions = [];
         if ($request->isXmlHttpRequest()) {
             $candidats = $request->request->get("candidats");
             if (is_array($candidats)) {
                 foreach ($candidats as $position => $candidatId) {
                     $candidat = $this->candidatRepository->find($candidatId);
                     if ($candidat) {
-                        dump($candidat->getNom());
+                        $positions[] = $candidat->getId();
                     }
                 }
 
-                // $this->santeQuestionRepository->save();
-
-                return new Response('<div class="alert alert-success">Tri enregistré</div>');
+                return new Response(implode('|', $positions));
             }
-
-            return new Response('<div class="alert alert-error">Erreur</div>');
         }
 
-        return new Response('<div class="alert alert-error">Erreur</div>');
-
+        return new Response(null);
     }
 
     /**

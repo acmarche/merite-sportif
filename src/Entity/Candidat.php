@@ -54,14 +54,33 @@ class Candidat
      */
     private $votes;
 
+    /**
+     * Utilisez pendant le vote
+     * @var int
+     */
+    private $position;
+
     public function __construct()
     {
+        $this->position = 0;
         $this->votes = new ArrayCollection();
     }
 
     public function __toString()
     {
         return $this->nom.' '.$this->prenom;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): self
+    {
+        $this->position = $position;
+
+        return $this;
     }
 
     /**
