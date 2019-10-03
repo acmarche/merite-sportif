@@ -39,9 +39,9 @@ class Candidat
     private $palmares;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Categorie", inversedBy="candidats")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Categorie", inversedBy="candidats")
      */
-    private $categories;
+    private $categorie;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sport", inversedBy="candidats")
@@ -49,14 +49,50 @@ class Candidat
      */
     private $sport;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="candidat", orphanRemoval=true)
+     */
+    private $votes;
+
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function __toString()
     {
         return $this->nom.' '.$this->prenom;
+    }
+
+    /**
+     * @return Collection|Vote[]
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): self
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes[] = $vote;
+            $vote->setCandidat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): self
+    {
+        if ($this->votes->contains($vote)) {
+            $this->votes->removeElement($vote);
+            // set the owning side to null (unless already changed)
+            if ($vote->getCandidat() === $this) {
+                $vote->setCandidat(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -112,28 +148,14 @@ class Candidat
         return $this;
     }
 
-    /**
-     * @return Collection|Categorie[]
-     */
-    public function getCategories(): Collection
+    public function getCategorie(): ?Categorie
     {
-        return $this->categories;
+        return $this->categorie;
     }
 
-    public function addCategory(Categorie $category): self
+    public function setCategorie(?Categorie $categorie): self
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Categorie $category): self
-    {
-        if ($this->categories->contains($category)) {
-            $this->categories->removeElement($category);
-        }
+        $this->categorie = $categorie;
 
         return $this;
     }
@@ -149,5 +171,6 @@ class Candidat
 
         return $this;
     }
+
 
 }

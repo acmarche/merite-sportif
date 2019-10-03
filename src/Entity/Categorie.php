@@ -29,18 +29,55 @@ class Categorie
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Candidat", mappedBy="categories")
+     * @ORM\OneToMany(targetEntity="App\Entity\Candidat", mappedBy="categorie")
      */
     private $candidats;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="categorie", orphanRemoval=true)
+     */
+    private $votes;
 
     public function __construct()
     {
         $this->candidats = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function __toString()
     {
         return $this->nom;
+    }
+
+    /**
+     * @return Collection|Vote[]
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): self
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes[] = $vote;
+            $vote->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): self
+    {
+        if ($this->votes->contains($vote)) {
+            $this->votes->removeElement($vote);
+            // set the owning side to null (unless already changed)
+            if ($vote->getCategorie() === $this) {
+                $vote->setCategorie(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -84,7 +121,7 @@ class Categorie
     {
         if (!$this->candidats->contains($candidat)) {
             $this->candidats[] = $candidat;
-            $candidat->addCategory($this);
+            $candidat->setCategorie($this);
         }
 
         return $this;
@@ -94,9 +131,14 @@ class Categorie
     {
         if ($this->candidats->contains($candidat)) {
             $this->candidats->removeElement($candidat);
-            $candidat->removeCategory($this);
+            // set the owning side to null (unless already changed)
+            if ($candidat->getCategorie() === $this) {
+                $candidat->setCategorie(null);
+            }
         }
 
         return $this;
     }
+
+
 }

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Candidat;
+use App\Entity\Categorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -19,32 +20,11 @@ class CandidatRepository extends ServiceEntityRepository
         parent::__construct($registry, Candidat::class);
     }
 
-    // /**
-    //  * @return Candidat[] Returns an array of Candidat objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getQueryBuilder(Categorie $categorie)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $this->createQueryBuilder('candidat')
+            ->andWhere('candidat.categorie = :categorie')
+            ->setParameter('categorie', $categorie)
+            ->orderBy('candidat.nom', 'ASC');
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Candidat
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

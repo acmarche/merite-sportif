@@ -20,13 +20,10 @@
             <h3 class="text-success">Palmarès</h3>
             {{ candidat.palmares|nl2br }}
 
-            <h3 class="mt-2 text-success">Catégories</h3>
+            <h3 class="mt-2 text-success">Catégorie</h3>
+            {{ candidat.categorie }}
             <br/>
-            <ul class="list-group">
-                {% for categorie in candidat.categories %}
-                    <li class="list-group-item">{{ categorie }}</li>
-                {% endfor %}
-            </ul>
+
         </div>
     </div>
 

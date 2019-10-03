@@ -21,7 +21,8 @@
                 <tr>
                     <th>Nom</th>
                     <th>Prenom</th>
-                    <th>Catégorie(s)</th>
+                    <th>Sport</th>
+                    <th>Catégorie</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -32,7 +33,8 @@
                                 {{ candidat.nom }}</a>
                         </td>
                         <td>{{ candidat.prenom }}</td>
-                        <td>{{ candidat.categories|length }}</td>
+                        <td>{{ candidat.sport }}</td>
+                        <td>{{ candidat.categorie }}</td>
                     </tr>
                 {% else %}
                     <tr>

@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}Mérite sportif{% endblock %}</title>
+    <title>{% block title %}Mérite Sportif{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
     {% block stylesheets %}{% endblock %}
 
@@ -22,7 +22,7 @@
 <body>
 <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top border-bottom shadow-sm">
     {% block brand %}
-        <i class="fas fa-home"></i> <a class="navbar-brand" href="{{ path('merite_home') }}">Mérite sportif</a>
+        <i class="fas fa-home"></i> <a class="navbar-brand" href="{{ path('merite_home') }}">Mérite & Challenge Sportif</a>
     {% endblock %}
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsleDefault"
             aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,7 @@
     </div>
 </nav>
 
-<main role="main" class="container-fluid pt-3">
+<main role="main" class="container pt-3">
 
     {% include '_flash_messages.html.twig' %}
 

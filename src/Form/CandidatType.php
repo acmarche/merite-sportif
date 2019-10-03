@@ -40,11 +40,11 @@ class CandidatType extends AbstractType
                 ]
             )
             ->add(
-                'categories',
+                'categorie',
                 EntityType::class,
                 [
                     'class' => Categorie::class,
-                    'multiple' => true,
+                    'multiple' => false,
                     'expanded' => true,
                 ]
             );
