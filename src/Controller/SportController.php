@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Sport;
 use App\Form\SportType;
 use App\Repository\SportRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/sport")
+ * @IsGranted("ROLE_MERITE_ADMIN")
  */
 class SportController extends AbstractController
 {
@@ -20,9 +22,12 @@ class SportController extends AbstractController
      */
     public function index(SportRepository $sportRepository): Response
     {
-        return $this->render('sport/index.html.twig', [
-            'sports' => $sportRepository->findAll(),
-        ]);
+        return $this->render(
+            'sport/index.html.twig',
+            [
+                'sports' => $sportRepository->findAll(),
+            ]
+        );
     }
 
     /**
@@ -42,10 +47,13 @@ class SportController extends AbstractController
             return $this->redirectToRoute('sport_index');
         }
 
-        return $this->render('sport/new.html.twig', [
-            'sport' => $sport,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'sport/new.html.twig',
+            [
+                'sport' => $sport,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -53,9 +61,12 @@ class SportController extends AbstractController
      */
     public function show(Sport $sport): Response
     {
-        return $this->render('sport/show.html.twig', [
-            'sport' => $sport,
-        ]);
+        return $this->render(
+            'sport/show.html.twig',
+            [
+                'sport' => $sport,
+            ]
+        );
     }
 
     /**
@@ -72,10 +83,13 @@ class SportController extends AbstractController
             return $this->redirectToRoute('sport_index');
         }
 
-        return $this->render('sport/edit.html.twig', [
-            'sport' => $sport,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'sport/edit.html.twig',
+            [
+                'sport' => $sport,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**

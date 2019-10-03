@@ -33,6 +33,21 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $email;
+
+    public function __toString()
+    {
+        return $this->username;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,7 +67,38 @@ class User implements UserInterface
 
     public function getRoles(): ?array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        $roles[] = 'ROLE_MERITE';
+
+        return array_unique($roles);
+    }
+
+    public function addRole(string $role): self
+    {
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    public function removeRole(string $role): self
+    {
+        if (in_array($role, $this->roles, true)) {
+            $index = array_search($role, $this->roles);
+            unset($this->roles[$index]);
+        }
+
+        return $this;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        if (in_array($role, $this->getRoles(), true)) {
+            return true;
+        }
+
+        return false;
     }
 
     public function setRoles(array $roles): self
@@ -89,5 +135,29 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }

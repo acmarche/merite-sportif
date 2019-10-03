@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class TokenController
- * @package AcMarche\Volontariat\Controller
+ *
  * @Route("/token")
  */
 class TokenController extends AbstractController

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Club;
 use App\Entity\Vote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -27,5 +28,22 @@ class VoteRepository extends ServiceEntityRepository
             ->orderBy('vote.position', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param Club $club
+     * @return Vote[]
+     */
+    public function getByClub(Club $club)
+    {
+        return $this->createQueryBuilder('vote')
+            ->andWhere('vote.club = :club')
+            ->setParameter('club', $club)
+            ->orderBy('vote.categorie', 'ASC')
+            ->orderBy('vote.candidat', 'ASC')
+            ->orderBy('vote.position', 'ASC')
+            ->getQuery()
+            ->getResult();
+
     }
 }

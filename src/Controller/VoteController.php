@@ -3,13 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Candidat;
+use App\Entity\Club;
 use App\Entity\Vote;
 use App\Form\VoteType;
 use App\Repository\CandidatRepository;
 use App\Repository\CategorieRepository;
 use App\Repository\ClubRepository;
 use App\Repository\VoteRepository;
+use App\Service\VoteService;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/vote")
+ * @IsGranted("ROLE_MERITE")
  */
 class VoteController extends AbstractController
 {
@@ -36,51 +40,64 @@ class VoteController extends AbstractController
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var VoteRepository
+     */
+    private $voteRepository;
+    /**
+     * @var VoteService
+     */
+    private $voteService;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         CategorieRepository $categorieRepository,
         CandidatRepository $candidatRepository,
-        ClubRepository $clubRepository
+        ClubRepository $clubRepository,
+        VoteRepository $voteRepository,
+        VoteService $voteService
     ) {
         $this->categorieRepository = $categorieRepository;
         $this->candidatRepository = $candidatRepository;
         $this->clubRepository = $clubRepository;
         $this->entityManager = $entityManager;
+        $this->voteRepository = $voteRepository;
+        $this->voteService = $voteService;
     }
 
     /**
      * @Route("/", name="vote_index", methods={"GET"})
      */
-    public function index(VoteRepository $voteRepository): Response
+    public function index(): Response
     {
+        $votes = $this->voteRepository->getAll();
+
         return $this->render(
             'vote/index.html.twig',
             [
-                'votes' => $voteRepository->getAll(),
+                'votes' => $votes,
             ]
         );
     }
 
     /**
-     * @Route("/intro", name="vote_new_intro", methods={"GET","POST"})
+     * @Route("/intro/{id}", name="vote_intro", methods={"GET","POST"})
      */
-    public function begin(Request $request): Response
+    public function intro(Club $club): Response
     {
         return $this->render(
             'vote/intro.html.twig',
             [
-
+                'club' => $club,
             ]
         );
     }
 
     /**
-     * @Route("/new", name="vote_new", methods={"GET","POST"})
+     * @Route("/new/{id}", name="vote_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Club $club): Response
     {
-        $club = $this->clubRepository->find(1);
         $categorie = $this->categorieRepository->find(1);
         $candidats = $categorie->getCandidats();
         $data = [];
@@ -102,7 +119,6 @@ class VoteController extends AbstractController
                 if (is_array($positions)) {
                     $key = array_search($candidat->getId(), $positions);
                     if ($key !== null) {
-                        dump($key);
                         $vote->setPosition($key);
                     }
                 }
@@ -112,7 +128,7 @@ class VoteController extends AbstractController
             $this->entityManager->flush();
             $this->addFlash('success', 'Votre vote a bien été pris en compte');
 
-            return $this->redirectToRoute('vote_index');
+            return $this->redirectToRoute('club_show', ['id' => $club->getId()]);
         }
 
         return $this->render(
@@ -125,18 +141,6 @@ class VoteController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/{id}", name="vote_show", methods={"GET"})
-     */
-    public function show(Vote $vote): Response
-    {
-        return $this->render(
-            'vote/show.html.twig',
-            [
-                'vote' => $vote,
-            ]
-        );
-    }
 
     /**
      * @Route("/{id}/edit", name="vote_edit", methods={"GET","POST"})

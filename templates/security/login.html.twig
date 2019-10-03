@@ -26,7 +26,7 @@
     <div class="text-center">
 
         <form class="form-signin" method="post" action="{{ path('app_login') }}">
-            <img class="mb-4 img-fluid" title="Grr" src="{{ asset('marche.png') }}" alt="logo" width="72">
+            <img class="mb-4 img-fluid" title="Grr" src="{{ asset('marche.png') }}" alt="logo" width="150">
             <h1 class="h3 mb-3 font-weight-normal">Authentification</h1>
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -34,7 +34,7 @@
             <label for="inputEmail"
                    class="sr-only">Nom d'utilisateur</label>
             <input type="text" name="username" value="{{ last_username }}" id="inputEmail" class="form-control"
-                   placeholder="votre login" required autofocus>
+                   placeholder="Votre nom d'utilisateur" required autofocus>
             <label for="inputPassword"
                    class="sr-only">Mot de passe</label>
             <input name="password" type="password" id="inputPassword" class="form-control"

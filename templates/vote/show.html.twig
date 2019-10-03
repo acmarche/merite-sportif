@@ -1,26 +1,44 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout_front.html.twig' %}
 
 {% block title %}Vote{% endblock %}
 
 {% block body %}
-    <h1>Vote</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ vote.id }}</td>
-            </tr>
-            <tr>
-                <th>Position</th>
-                <td>{{ vote.position }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h3>Résultats des votes pour {{ club }}</h3>
+        </div>
+        <div class="card-body">
 
-    <a href="{{ path('vote_index') }}">back to list</a>
+            {% for data in votes %}
 
-    <a href="{{ path('vote_edit', {'id': vote.id}) }}">edit</a>
+                <h4 class="text-success">{{ data.categorie }}</h4>
 
-    {{ include('vote/_delete_form.html.twig') }}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Candidat</th>
+                        <th>Position</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for vote in data.votes %}
+                        <tr>
+                            <td>{{ vote.candidat }}</td>
+                            <td>{{ vote.position }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+            {% endfor %}
+
+        </div>
+    </div>
+  <br/>
+    <a href="{{ path('club_show',{'id': club.id}) }}"><i
+                class="fas fa-arrow-left"></i> Retour</a>
+
+
 {% endblock %}

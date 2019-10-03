@@ -2,6 +2,9 @@
     Retour à la liste
 </a>
 
+<a href="{{ path('vote_intro', { 'id': club.id }) }}" role="button"
+   class="btn btn-primary"><i class="far fa-comment"></i> Voter</a>
+
 <a href="{{ path('club_edit', { 'id': club.id }) }}" role="button"
    class="btn btn-primary"><i class="far fa-edit"></i> Editer</a>
 
