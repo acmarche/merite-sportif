@@ -1,6 +1,6 @@
 {% extends 'layout_front.html.twig' %}
 
-{% block title %}{{club}}{% endblock %}
+{% block title %}{{ club }}{% endblock %}
 
 {% block body %}
     <div class="card bg-light mb-3">
@@ -10,10 +10,42 @@
         <div class="card-body">
 
             {% include 'club/_actions.html.twig' %}
-  {% include 'club/_votes.html.twig' %}
 
-
-
+            {% if is_granted('ROLE_MERITE_ADMIN') %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th>
+                            Lien de vote<br>
+                            <span class="text-muted">
+                                Le lien sert à connecter directement avec le compte du club<br>
+                                sans passer par un nom d'utilisateur/mdp
+                            </span>
+                        </th>
+                        <td>
+                            {% if club.token %}
+                                <a href="{{ path('app_token_show',{'value':club.user.token.value}) }}" target="_blank">
+                                    Voter
+                                </a>
+                            {% else %}
+                                No token
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Compte utilisateur</th>
+                        <td>
+                            {% if club.user %}
+                                <a href="{{ path('merite_user_show',{'id':club.user.id}) }}">
+                                    {{ club.user }}
+                                </a>
+                            {% else %}
+                                No user
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            {% endif %}
+            {% include 'club/_votes.html.twig' %}
         </div>
     </div>
 

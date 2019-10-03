@@ -9,36 +9,9 @@
             <h3>Résultats des votes pour {{ club }}</h3>
         </div>
         <div class="card-body">
-
-            {% for data in votes %}
-
-                <h4 class="text-success">{{ data.categorie }}</h4>
-
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>Candidat</th>
-                        <th>Position</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for vote in data.votes %}
-                        <tr>
-                            <td>{{ vote.candidat }}</td>
-                            <td>{{ vote.position }}</td>
-                        </tr>
-                    {% endfor %}
-
-                    </tbody>
-                </table>
-
-            {% endfor %}
-
+            {% include 'club/_votes.html.twig' %}
         </div>
     </div>
   <br/>
-    <a href="{{ path('club_show',{'id': club.id}) }}"><i
-                class="fas fa-arrow-left"></i> Retour</a>
-
 
 {% endblock %}

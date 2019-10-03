@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use function Sodium\add;
 
 /**
  * Class TokenController
@@ -27,12 +28,15 @@ class TokenController extends AbstractController
     }
 
     /**
-     * @Route("/",name="merite_token")
+     * @Route("/",name="merite_token_create")
      * @IsGranted("ROLE_MERITE_ADMIN")
      */
     public function index()
     {
         $this->tokenManager->createForAllUsers();
+        $this->addFlash('success', 'Les tokens ont bien été générés');
+
+        return $this->redirectToRoute('merite_user_index');
     }
 
     /**

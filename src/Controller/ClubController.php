@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/club")
+ * @IsGranted("ROLE_MERITE_ADMIN")
  */
 class ClubController extends AbstractController
 {
@@ -65,7 +66,7 @@ class ClubController extends AbstractController
 
     /**
      * @Route("/new", name="club_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_MERITE_ADMIN")
+     *
      */
     public function new(Request $request): Response
     {
@@ -93,7 +94,7 @@ class ClubController extends AbstractController
 
     /**
      * @Route("/{id}", name="club_show", methods={"GET"})
-     * @IsGranted("ROLE_MERITE")
+     *
      */
     public function show(Club $club): Response
     {
@@ -110,7 +111,7 @@ class ClubController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="club_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_MERITE_ADMIN")
+     *
      */
     public function edit(Request $request, Club $club): Response
     {
@@ -134,7 +135,7 @@ class ClubController extends AbstractController
 
     /**
      * @Route("/{id}", name="club_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_MERITE_ADMIN")
+     *
      */
     public function delete(Request $request, Club $club): Response
     {

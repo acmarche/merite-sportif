@@ -133,7 +133,7 @@ class VoteController extends AbstractController
             $this->entityManager->flush();
             $this->addFlash('success', 'Votre vote a bien été pris en compte');
 
-            return $this->redirectToRoute('club_show', ['id' => $club->getId()]);
+            return $this->redirectToRoute('vote_show');
         }
 
         return $this->render(
@@ -146,6 +146,24 @@ class VoteController extends AbstractController
         );
     }
 
+    /**
+     * @Route("/show", name="vote_show", methods={"GET"})
+     *
+     */
+    public function show(): Response
+    {
+        $user = $this->getUser();
+        $club = $user->getClub();
+        $votes = $this->voteService->getVotesByClub($club);
+
+        return $this->render(
+            'vote/show.html.twig',
+            [
+                'club' => $club,
+                'votes' => $votes,
+            ]
+        );
+    }
 
     /**
      * @Route("/{id}/edit", name="vote_edit", methods={"GET","POST"})
@@ -195,13 +213,16 @@ class VoteController extends AbstractController
 
     /**
      * @Route("/{id}", name="vote_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_MERITE_ADMIN")
      */
-    public function delete(Request $request, Vote $vote): Response
+    public function delete(Request $request, Club $club): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$vote->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($vote);
-            $entityManager->flush();
+        if ($this->isCsrfTokenValid('delete'.$club->getId(), $request->request->get('_token'))) {
+
+            foreach ($club->getVotes() as $vote) {
+                $this->entityManager->remove($vote);
+            }
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('vote_index');

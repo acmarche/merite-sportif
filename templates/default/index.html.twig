@@ -4,4 +4,9 @@
     <h3>Mérite & Challenge Sportif 2019</h3>
 
     <img src="{{ asset('marche.png') }}" style="width: 150px;" alt="logo">
+
+
+    {% if is_granted('ROLE_MERITE_CLUB') %}
+
+    {% endif %}
 {% endblock %}
