@@ -1,0 +1,94 @@
+{% extends 'layout_front.html.twig' %}
+
+{% block title %}Nouveau vote{% endblock %}
+{% block stylesheets %}
+    <style>
+        #sortable li:hover {
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+
+    {% include 'vote/_titre.html.twig' %}
+
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h3>Catégorie: {{ categorie }}</h3>
+
+            <p class="text-muted">{{ categorie.description|nl2br }}
+            </p>
+
+            <br/>
+            <div class="alert alert-info">
+                Vous devez choisir entre 1 et 2 candidats<br/>
+                Glissez les noms pour choisir le premier candidat
+            </div>
+            <br/>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_label(form.candidats) }}
+            {{ form_help(form.candidats) }}
+
+            <ul class="list-group mb-4" id="sortable">
+                {% for candidatField in form.candidats %}
+                    {% set candidatId = candidatField.vars.value %}
+                    <li class="list-group-item" id="candidats-{{ candidatId }}">
+                       <i class="fas fa-arrows-alt-v"></i> <div class="w-75 float-left">
+                            {{ form_errors(candidatField) }}
+                            {{ form_widget(candidatField) }}
+                        </div>
+                        <button class="float-right btn btn-sm btn-info" role='button' data-toggle="tooltip"
+                                data-placement="top" title="hello">
+                            <i class="fas fa-award"></i>
+                            Palmarès
+                        </button>
+                    </li>
+                {% else %}
+                    <li class="list-group-item list-group-item-danger">Aucun candidats pour cette catégorie !</li>
+                {% endfor %}
+            </ul>
+
+            <button class="btn btn-primary" type="submit"><i class="far fa-save"></i> Sauvegarder et suivant</button>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#sortable").sortable({
+                // limitons les déplacements sur l'axe des ordonnées, ce sera plus propre
+                axis: 'y',
+                cursor: 'move',
+                update: function (event, ui) {
+                    // Construit un tableau des ids des stories
+                    serial = $(this).sortable('serialize');
+                    // Appelle une action en ajax
+                    $.ajax({
+                        url: '{{ path('vote_trier') }}',
+                        type: "post",
+                        data: serial,
+                        success: function (html) {
+                            $('#success').append(html);
+                            $('#success').fadeIn(500);
+                        },
+                        error: function () {
+                            alert("Oups le tri ne s'est pas enregistré");
+                        }
+                    })
+                }
+            });
+
+            $("#sortable").disableSelection();
+        });
+
+    </script>
+{% endblock %}
