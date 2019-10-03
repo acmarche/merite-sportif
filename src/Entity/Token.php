@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Doctrine\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Token
 {
-   // use TimestampableEntity;
+    use TimestampableTrait;
 
     /**
      * @var integer|null $id
@@ -26,7 +27,7 @@ class Token
     protected $id;
 
     /**
-     * @var string|null $value
+     * @var string $value
      *
      * @ORM\Column(type="string", length=50, unique=true)
      * @Assert\NotBlank()
@@ -45,6 +46,13 @@ class Token
      */
     protected $user;
 
+    public function __construct()
+    {
+        $this->value = bin2hex(random_bytes(20));
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
     public function __toString()
     {
         return $this->value;
@@ -55,7 +63,7 @@ class Token
         return $this->id;
     }
 
-    public function getValue(): ?string
+    public function getValue(): string
     {
         return $this->value;
     }

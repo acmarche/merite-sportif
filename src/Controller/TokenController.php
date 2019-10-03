@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Token;
 use App\Service\TokenManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,8 +27,8 @@ class TokenController extends AbstractController
     }
 
     /**
-     * @Route("/",name="volontariat_token")
-     *
+     * @Route("/",name="merite_token")
+     * @IsGranted("ROLE_MERITE_ADMIN")
      */
     public function index()
     {
@@ -49,7 +50,7 @@ class TokenController extends AbstractController
         $user = $token->getUser();
         $this->tokenManager->loginUser($request, $user, 'main');
 
-        return $this->redirectToRoute('merite_home');
+        return $this->redirectToRoute('vote_intro');
 
     }
 

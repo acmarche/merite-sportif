@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/vote")
- * @IsGranted("ROLE_MERITE")
+ * @IsGranted("ROLE_MERITE_CLUB")
  */
 class VoteController extends AbstractController
 {
@@ -81,10 +81,13 @@ class VoteController extends AbstractController
     }
 
     /**
-     * @Route("/intro/{id}", name="vote_intro", methods={"GET","POST"})
+     * @Route("/intro", name="vote_intro", methods={"GET","POST"})
      */
-    public function intro(Club $club): Response
+    public function intro(): Response
     {
+        $user = $this->getUser();
+        $club = $user->getClub();
+
         return $this->render(
             'vote/intro.html.twig',
             [
@@ -94,10 +97,12 @@ class VoteController extends AbstractController
     }
 
     /**
-     * @Route("/new/{id}", name="vote_new", methods={"GET","POST"})
+     * @Route("/new", name="vote_new", methods={"GET","POST"})
      */
-    public function new(Request $request, Club $club): Response
+    public function new(Request $request): Response
     {
+        $user = $this->getUser();
+        $club = $user->getClub();
         $categorie = $this->categorieRepository->find(1);
         $candidats = $categorie->getCandidats();
         $data = [];

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Club;
+use App\Entity\User;
 use App\Form\ClubType;
 use App\Repository\ClubRepository;
+use App\Service\UserService;
 use App\Service\VoteService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -15,8 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/club")
- *
- *
  */
 class ClubController extends AbstractController
 {
@@ -32,15 +32,21 @@ class ClubController extends AbstractController
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var UserService
+     */
+    private $userService;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         ClubRepository $clubRepository,
-        VoteService $voteService
+        VoteService $voteService,
+        UserService $userService
     ) {
         $this->clubRepository = $clubRepository;
         $this->voteService = $voteService;
         $this->entityManager = $entityManager;
+        $this->userService = $userService;
     }
 
     /**
@@ -70,6 +76,7 @@ class ClubController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $this->entityManager->persist($club);
+            $this->userService->createUser($club);
             $this->entityManager->flush();
 
             return $this->redirectToRoute('club_index');

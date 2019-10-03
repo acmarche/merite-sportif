@@ -24,24 +24,42 @@ class Club
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
-    private $token;
+    private $email;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="club", orphanRemoval=true)
      */
     private $votes;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="club", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
-        $this->token = bin2hex(random_bytes(20));
         $this->votes = new ArrayCollection();
     }
 
     public function __toString()
     {
         return $this->nom;
+    }
+
+    public function getToken()
+    {
+        if (!$user = $this->getUser()) {
+            return null;
+        }
+
+        if (!$token = $this->getUser()->getToken()) {
+            return null;
+        }
+
+        return $token->getValue();
     }
 
     public function getId(): ?int
@@ -57,18 +75,6 @@ class Club
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getToken(): ?string
-    {
-        return $this->token;
-    }
-
-    public function setToken(string $token): self
-    {
-        $this->token = $token;
 
         return $this;
     }
@@ -103,4 +109,29 @@ class Club
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
 }

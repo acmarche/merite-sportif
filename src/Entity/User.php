@@ -39,9 +39,20 @@ class User implements UserInterface
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
     private $email;
+
+    /**
+     * @var Token|null $token
+     * @ORM\OneToOne(targetEntity="App\Entity\Token", mappedBy="user", cascade={"remove"})
+     */
+    private $token;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Club", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $club;
 
     public function __toString()
     {
@@ -157,6 +168,41 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getToken(): ?Token
+    {
+        return $this->token;
+    }
+
+    public function setToken(?Token $token): self
+    {
+        $this->token = $token;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $token === null ? null : $this;
+        if ($newUser !== $token->getUser()) {
+            $token->setUser($newUser);
+        }
+
+        return $this;
+    }
+
+    public function getClub(): ?Club
+    {
+        return $this->club;
+    }
+
+    public function setClub(Club $club): self
+    {
+        $this->club = $club;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $club->getUser()) {
+            $club->setUser($this);
+        }
 
         return $this;
     }
