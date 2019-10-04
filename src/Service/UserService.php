@@ -42,7 +42,7 @@ class UserService
         $this->entityManager = $entityManager;
     }
 
-    public function createUser(Club $club) {
+    public function createUser(Club $club) : User {
 
         $password = rand(1,2);
         $email = $club->getEmail();

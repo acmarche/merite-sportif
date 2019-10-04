@@ -6,6 +6,7 @@ use App\Entity\Club;
 use App\Entity\User;
 use App\Form\ClubType;
 use App\Repository\ClubRepository;
+use App\Service\TokenManager;
 use App\Service\UserService;
 use App\Service\VoteService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,17 +38,23 @@ class ClubController extends AbstractController
      * @var UserService
      */
     private $userService;
+    /**
+     * @var TokenManager
+     */
+    private $tokenManager;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         ClubRepository $clubRepository,
         VoteService $voteService,
-        UserService $userService
+        UserService $userService,
+        TokenManager $tokenManager
     ) {
         $this->clubRepository = $clubRepository;
         $this->voteService = $voteService;
         $this->entityManager = $entityManager;
         $this->userService = $userService;
+        $this->tokenManager = $tokenManager;
     }
 
     /**
@@ -80,7 +87,8 @@ class ClubController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $this->entityManager->persist($club);
-            $this->userService->createUser($club);
+            $user = $this->userService->createUser($club);
+            $this->tokenManager->generate($user);
             $this->entityManager->flush();
 
             return $this->redirectToRoute('club_index');
