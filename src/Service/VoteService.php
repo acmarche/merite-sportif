@@ -38,6 +38,15 @@ class VoteService
         $this->categorieRepository = $categorieRepository;
     }
 
+    public function voteExist(Club $club, Categorie $categorie): bool
+    {
+        if ($this->voteRepository->getByClubAndCategorie($club, $categorie)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function getVotesByClub(Club $club)
     {
         $rows = $this->voteRepository->getByClub($club);

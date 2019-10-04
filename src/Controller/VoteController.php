@@ -11,6 +11,7 @@ use App\Repository\CandidatRepository;
 use App\Repository\CategorieRepository;
 use App\Repository\ClubRepository;
 use App\Repository\VoteRepository;
+use App\Service\VoteManager;
 use App\Service\VoteService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -49,6 +50,10 @@ class VoteController extends AbstractController
      * @var VoteService
      */
     private $voteService;
+    /**
+     * @var VoteManager
+     */
+    private $voteManager;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -56,7 +61,8 @@ class VoteController extends AbstractController
         CandidatRepository $candidatRepository,
         ClubRepository $clubRepository,
         VoteRepository $voteRepository,
-        VoteService $voteService
+        VoteService $voteService,
+        VoteManager $voteManager
     ) {
         $this->categorieRepository = $categorieRepository;
         $this->candidatRepository = $candidatRepository;
@@ -64,6 +70,7 @@ class VoteController extends AbstractController
         $this->entityManager = $entityManager;
         $this->voteRepository = $voteRepository;
         $this->voteService = $voteService;
+        $this->voteManager = $voteManager;
     }
 
     /**
@@ -110,40 +117,31 @@ class VoteController extends AbstractController
         $candidats = $categorie->getCandidats();
         $data = [];
 
+        $next = $this->categorieRepository->findNext($categorie->getOrdre());
+
+        if ($this->voteService->voteExist($club, $categorie)) {
+            return $this->redirectToRoute('vote_new', ['ordre' => $next->getOrdre()]);
+        }
+
         $form = $this->createForm(VoteType::class, $data, ['categorie' => $categorie]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $data = $form->getData();
-            $positions = explode('|', $data['positions']);
-            /**
-             * @var Candidat[] $candidats
-             */
-            $candidats = $data['candidats'];
-            foreach ($candidats as $candidat) {
-
-                $vote = new Vote($categorie, $club, $candidat);
-                if (is_array($positions)) {
-                    $key = array_search($candidat->getId(), $positions);
-                    if ($key !== null) {
-                        $vote->setPosition($key);
-                    }
-                }
-                $this->entityManager->persist($vote);
-            }
+            $this->voteManager->handleVote($data, $club, $categorie);
 
             $this->entityManager->flush();
             $this->addFlash('success', 'Votre vote a bien été pris en compte');
 
             $isComplete = $this->voteService->isComplete($club);
+
             if ($isComplete) {
                 return $this->redirectToRoute('vote_show');
             }
 
-            $next = $this->categorieRepository->findNext($categorie->getOrdre());
-
             return $this->redirectToRoute('vote_new', ['ordre' => $next->getOrdre()]);
+
         }
 
         return $this->render(
