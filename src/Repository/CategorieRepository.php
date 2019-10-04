@@ -19,10 +19,21 @@ class CategorieRepository extends ServiceEntityRepository
         parent::__construct($registry, Categorie::class);
     }
 
-    public function getFirst()
+    public function getFirst(): Categorie
     {
         return $this->createQueryBuilder('categorie')
-            ->orderBy('categorie.id', 'ASC')
+            ->andWhere('categorie.ordre = :ordre')
+            ->setParameter('ordre', 1)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findNext(int $positionCurrent): Categorie
+    {
+        return $this->createQueryBuilder('categorie')
+            ->andWhere('categorie.ordre = :ordre')
+            ->setParameter('ordre', ++$positionCurrent)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

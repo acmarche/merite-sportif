@@ -29,6 +29,11 @@ class Categorie
     private $description;
 
     /**
+     * @ORM\Column(type="smallint", nullable=false, unique=true)
+     */
+    private $ordre;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Candidat", mappedBy="categorie")
      */
     private $candidats;
@@ -136,6 +141,18 @@ class Categorie
                 $candidat->setCategorie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOrdre()
+    {
+        return $this->ordre;
+    }
+
+    public function setOrdre($ordre): self
+    {
+        $this->ordre = $ordre;
 
         return $this;
     }

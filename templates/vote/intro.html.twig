@@ -1,6 +1,9 @@
 {% extends 'layout_front.html.twig' %}
 
 {% block body %}
+
+    {% include 'vote/_titre.html.twig' %}
+
     <div class="card bg-light mb-3">
         <div class="card-header">
             <h3>Prix du Mérite Sportif individuel 2018</h3>
@@ -11,7 +14,7 @@
             Le critère de sélection est la performance
             <br/>
 
-            <h4><a href="{{ path('vote_new',{'id':categorie.id}) }}">les proposés sont...</a></h4>
+            <h4><a href="{{ path('vote_new',{'ordre':categorie.ordre}) }}">les proposés sont...</a></h4>
 
         </div>
     </div>

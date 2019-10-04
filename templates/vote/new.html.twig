@@ -15,8 +15,10 @@
     <div class="card bg-light mb-3">
         <div class="card-header">
             <h3>Catégorie: {{ categorie }}</h3>
+        </div>
 
-            <p class="text-muted">{{ categorie.description|nl2br }}
+        <div class="card-body">
+            <p class="text-muted card-text">{{ categorie.description|nl2br }}
             </p>
 
             <br/>
@@ -53,7 +55,6 @@
             <button class="btn btn-primary" type="submit"><i class="far fa-save"></i> Sauvegarder et suivant</button>
 
             {{ form_end(form) }}
-
         </div>
     </div>
 

@@ -101,7 +101,7 @@ class VoteController extends AbstractController
     }
 
     /**
-     * @Route("/new/{id}", name="vote_new", methods={"GET","POST"})
+     * @Route("/new/{ordre}", name="vote_new", methods={"GET","POST"})
      */
     public function new(Request $request, Categorie $categorie): Response
     {
@@ -136,9 +136,14 @@ class VoteController extends AbstractController
             $this->entityManager->flush();
             $this->addFlash('success', 'Votre vote a bien été pris en compte');
 
-            $next = $this->categorieRepository->findNext();
+            $isComplete = $this->voteService->isComplete($club);
+            if ($isComplete) {
+                return $this->redirectToRoute('vote_show');
+            }
 
-            return $this->redirectToRoute('vote_show');
+            $next = $this->categorieRepository->findNext($categorie->getOrdre());
+
+            return $this->redirectToRoute('vote_new', ['ordre' => $next->getOrdre()]);
         }
 
         return $this->render(
@@ -160,12 +165,14 @@ class VoteController extends AbstractController
         $user = $this->getUser();
         $club = $user->getClub();
         $votes = $this->voteService->getVotesByClub($club);
+        $isComplete = $this->voteService->isComplete($club);
 
         return $this->render(
             'vote/show.html.twig',
             [
                 'club' => $club,
                 'votes' => $votes,
+                'voteIsComplete' => $isComplete,
             ]
         );
     }
