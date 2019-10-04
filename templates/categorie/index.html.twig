@@ -20,6 +20,7 @@
                 <thead>
                 <tr>
                     <th>Nom</th>
+                    <th>Ordre d'affichage</th>
                     <th>Candidats</th>
                 </tr>
                 </thead>
@@ -30,6 +31,7 @@
                             <a href="{{ path('categorie_show', {'id': categorie.id}) }}">
                                 {{ categorie.nom }}</a>
                         </td>
+                        <td>{{ categorie.ordre }}</td>
                         <td>
                             {{ categorie.candidats|length }}
                         </td>

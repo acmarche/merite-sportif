@@ -5,9 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
+ * @ORM\Table(uniqueConstraints={
+ *     @ORM\UniqueConstraint(columns={"email"})
+ * })
  * @ORM\Entity(repositoryClass="App\Repository\ClubRepository")
+ * @UniqueEntity(fields={"email"}, message="Un club a déjà cette adresse email")
  */
 class Club
 {
