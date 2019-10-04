@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Categorie;
 use App\Entity\Club;
 use App\Entity\Vote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -45,5 +46,21 @@ class VoteRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
+    }
+
+    /**
+     * @param Club $club
+     * @param Categorie $categorie
+     * @return Vote[]
+     */
+    public function getByClubAndCategorie(Club $club, Categorie $categorie)
+    {
+        return $this->createQueryBuilder('vote')
+            ->andWhere('vote.club = :club')
+            ->setParameter('club', $club)
+            ->andWhere('vote.categorie = :categorie')
+            ->setParameter('categorie', $categorie)
+            ->getQuery()
+            ->getResult();
     }
 }

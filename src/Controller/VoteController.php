@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Candidat;
+use App\Entity\Categorie;
 use App\Entity\Club;
 use App\Entity\Vote;
 use App\Form\VoteType;
@@ -88,22 +89,24 @@ class VoteController extends AbstractController
         $user = $this->getUser();
         $club = $user->getClub();
 
+        $categorie = $this->categorieRepository->getFirst();
+
         return $this->render(
             'vote/intro.html.twig',
             [
                 'club' => $club,
+                'categorie' => $categorie,
             ]
         );
     }
 
     /**
-     * @Route("/new", name="vote_new", methods={"GET","POST"})
+     * @Route("/new/{id}", name="vote_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Categorie $categorie): Response
     {
         $user = $this->getUser();
         $club = $user->getClub();
-        $categorie = $this->categorieRepository->find(1);
         $candidats = $categorie->getCandidats();
         $data = [];
 
@@ -132,6 +135,8 @@ class VoteController extends AbstractController
 
             $this->entityManager->flush();
             $this->addFlash('success', 'Votre vote a bien été pris en compte');
+
+            $next = $this->categorieRepository->findNext();
 
             return $this->redirectToRoute('vote_show');
         }

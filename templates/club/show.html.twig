@@ -14,6 +14,12 @@
             {% if is_granted('ROLE_MERITE_ADMIN') %}
                 <table class="table table-bordered">
                     <tr>
+                        <th>Vote complet ?</th>
+                        <td>
+                            {% if voteIsComplete %} Oui {% else %} Non {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
                         <th>
                             Lien de vote<br>
                             <span class="text-muted">

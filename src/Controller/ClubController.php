@@ -56,10 +56,13 @@ class ClubController extends AbstractController
      */
     public function index(): Response
     {
+        $clubs = $this->clubRepository->findAll();
+        $this->voteService->setIsComplete($clubs);
+
         return $this->render(
             'club/index.html.twig',
             [
-                'clubs' => $this->clubRepository->findAll(),
+                'clubs' => $clubs,
             ]
         );
     }
@@ -99,12 +102,14 @@ class ClubController extends AbstractController
     public function show(Club $club): Response
     {
         $votes = $this->voteService->getVotesByClub($club);
+        $isComplete = $this->voteService->isComplete($club);
 
         return $this->render(
             'club/show.html.twig',
             [
                 'club' => $club,
                 'votes' => $votes,
+                'voteIsComplete' => $isComplete,
             ]
         );
     }

@@ -39,6 +39,11 @@ class Club
      */
     private $user;
 
+    /**
+     * @var bool
+     */
+    private $voteIsComplete = false;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
@@ -60,6 +65,22 @@ class Club
         }
 
         return $token->getValue();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVoteIsComplete(): bool
+    {
+        return $this->voteIsComplete;
+    }
+
+    /**
+     * @param bool $voteIsComplete
+     */
+    public function setVoteIsComplete(bool $voteIsComplete): void
+    {
+        $this->voteIsComplete = $voteIsComplete;
     }
 
     public function getId(): ?int

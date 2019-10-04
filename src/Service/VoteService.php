@@ -13,6 +13,7 @@ namespace App\Service;
 
 use App\Entity\Categorie;
 use App\Entity\Club;
+use App\Repository\CategorieRepository;
 use App\Repository\VoteRepository;
 
 class VoteService
@@ -26,10 +27,15 @@ class VoteService
      * @var array
      */
     private $votes = [];
+    /**
+     * @var CategorieRepository
+     */
+    private $categorieRepository;
 
-    public function __construct(VoteRepository $voteRepository)
+    public function __construct(VoteRepository $voteRepository, CategorieRepository $categorieRepository)
     {
         $this->voteRepository = $voteRepository;
+        $this->categorieRepository = $categorieRepository;
     }
 
     public function getVotesByClub(Club $club)
@@ -52,5 +58,28 @@ class VoteService
     {
         $this->votes[$categorie->getId()]['categorie'] = $categorie;
         $this->votes[$categorie->getId()]['votes'][] = $vote;
+    }
+
+    public function isComplete(Club $club): bool
+    {
+        foreach ($this->categorieRepository->findAll() as $categorie) {
+            $votes = $this->voteRepository->getByClubAndCategorie($club, $categorie);
+            if (!$votes) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    /**
+     * @param Club[] $clubs
+     */
+    public function setIsComplete(array $clubs)
+    {
+        foreach ($clubs as $club) {
+            $club->setvoteIsComplete($this->isComplete($club));
+        }
     }
 }
