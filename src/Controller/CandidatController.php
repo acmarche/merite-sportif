@@ -22,9 +22,12 @@ class CandidatController extends AbstractController
      */
     public function index(CandidatRepository $candidatRepository): Response
     {
-        return $this->render('candidat/index.html.twig', [
-            'candidats' => $candidatRepository->findAll(),
-        ]);
+        return $this->render(
+            'candidat/index.html.twig',
+            [
+                'candidats' => $candidatRepository->findAll(),
+            ]
+        );
     }
 
     /**
@@ -41,13 +44,18 @@ class CandidatController extends AbstractController
             $entityManager->persist($candidat);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Candidat ajouté');
+
             return $this->redirectToRoute('candidat_index');
         }
 
-        return $this->render('candidat/new.html.twig', [
-            'candidat' => $candidat,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'candidat/new.html.twig',
+            [
+                'candidat' => $candidat,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -55,9 +63,12 @@ class CandidatController extends AbstractController
      */
     public function show(Candidat $candidat): Response
     {
-        return $this->render('candidat/show.html.twig', [
-            'candidat' => $candidat,
-        ]);
+        return $this->render(
+            'candidat/show.html.twig',
+            [
+                'candidat' => $candidat,
+            ]
+        );
     }
 
     /**
@@ -71,13 +82,18 @@ class CandidatController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', 'Candidat modifié');
+
             return $this->redirectToRoute('candidat_index');
         }
 
-        return $this->render('candidat/edit.html.twig', [
-            'candidat' => $candidat,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'candidat/edit.html.twig',
+            [
+                'candidat' => $candidat,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**

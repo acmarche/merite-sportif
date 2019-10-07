@@ -40,13 +40,14 @@ class Vote
     /**
      * @ORM\Column(type="smallint")
      */
-    private $position;
+    private $point;
 
-    public function __construct(Categorie $categorie, Club $club, Candidat $candidat)
+    public function __construct(Categorie $categorie, Club $club, Candidat $candidat, int $points)
     {
         $this->categorie = $categorie;
         $this->club = $club;
         $this->candidat = $candidat;
+        $this->point = $points;
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }
@@ -92,15 +93,16 @@ class Vote
         return $this;
     }
 
-    public function getPosition(): ?int
+    public function getPoint(): ?int
     {
-        return $this->position;
+        return $this->point;
     }
 
-    public function setPosition(int $position): self
+    public function setPoint(int $point): self
     {
-        $this->position = $position;
+        $this->point = $point;
 
         return $this;
     }
+
 }

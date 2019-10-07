@@ -7,6 +7,7 @@
     "php": "^7.2",
     "ext-ctype": "*",
     "ext-iconv": "*",
+    "liip/imagine-bundle": "^2.2",
     "sensio/framework-extra-bundle": "^5.1",
     "symfony/asset": "4.3.*",
     "symfony/console": "4.3.*",
@@ -28,7 +29,8 @@
     "symfony/validator": "4.3.*",
     "symfony/web-link": "4.3.*",
     "symfony/web-server-bundle": "4.3.*",
-    "symfony/yaml": "4.3.*"
+    "symfony/yaml": "4.3.*",
+    "vich/uploader-bundle": "^1.10"
   },
   "require-dev": {
     "symfony/debug-pack": "*",

@@ -4,20 +4,34 @@
 
     {% include 'vote/_titre.html.twig' %}
 
-    <div class="card bg-light mb-3">
-        <div class="card-header">
-            <h3>Prix du Mérite Sportif individuel 2018</h3>
+    {% for categorie in categories %}
+        <div class="card bg-light mb-3">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-10">
+                        <h3>{{ categorie.nom }}</h3>
+                    </div>
+                    <div class="col-2">
+                        {% if categorie.complete %}
+                            <span class="float-right" title="Voté"><i class="fas fa-check" style="color: #1c7430;"></i></span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    {{ categorie.description|nl2br }}
+                </p>
 
-            Le candidat doit être domicilié dans la commune ou être membre d’un club dont le siège et les activités sont
-            situés dans la commune
-            <br/>
-            Le critère de sélection est la performance
-            <br/>
-
-            <h4><a href="{{ path('vote_new',{'ordre':categorie.ordre}) }}">les proposés sont...</a></h4>
-
+                {% if categorie.complete %}
+                    <p class="alert alert-info">Vous avez déjà voté</p>
+                {% else %}
+                    <h4><a href="{{ path('vote_new',{'ordre':categorie.ordre}) }}">les proposés sont...</a></h4>
+                {% endif %}
+            </div>
         </div>
-    </div>
+
+    {% endfor %}
 
 {% endblock %}
 

@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Candidat;
 use App\Entity\Categorie;
 use App\Entity\Club;
-use App\Entity\Vote;
 use App\Form\VoteType;
 use App\Repository\CandidatRepository;
 use App\Repository\CategorieRepository;
@@ -96,13 +94,17 @@ class VoteController extends AbstractController
         $user = $this->getUser();
         $club = $user->getClub();
 
-        $categorie = $this->categorieRepository->getFirst();
+        $categories = $this->categorieRepository->findAll();
+        foreach ($categories as $categorie) {
+            $done = $this->voteService->voteExist($club, $categorie);
+            $categorie->setComplete($done);
+        }
 
         return $this->render(
             'vote/intro.html.twig',
             [
                 'club' => $club,
-                'categorie' => $categorie,
+                'categories' => $categories,
             ]
         );
     }
@@ -120,7 +122,9 @@ class VoteController extends AbstractController
         $next = $this->categorieRepository->findNext($categorie->getOrdre());
 
         if ($this->voteService->voteExist($club, $categorie) && $next !== null) {
-            return $this->redirectToRoute('vote_new', ['ordre' => $next->getOrdre()]);
+            $this->addFlash('warning', 'Vous avez déjà voté dans cette catégorie');
+
+            return $this->redirectToRoute('vote_intro');
         }
 
         $form = $this->createForm(VoteType::class, $data, ['categorie' => $categorie]);
@@ -128,8 +132,9 @@ class VoteController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $data = $form->getData();
-            $this->voteManager->handleVote($data, $club, $categorie);
+            $points = $request->get('points');
+
+            $this->voteManager->handleVote($points, $club, $categorie);
 
             $this->entityManager->flush();
             $this->addFlash('success', 'Votre vote a bien été pris en compte');
@@ -140,10 +145,7 @@ class VoteController extends AbstractController
                 return $this->redirectToRoute('vote_show');
             }
 
-            if ($next !== null) {
-                return $this->redirectToRoute('vote_new', ['ordre' => $next->getOrdre()]);
-            }
-
+            return $this->redirectToRoute('vote_intro');
         }
 
         return $this->render(
@@ -173,29 +175,6 @@ class VoteController extends AbstractController
                 'club' => $club,
                 'votes' => $votes,
                 'voteIsComplete' => $isComplete,
-            ]
-        );
-    }
-
-    /**
-     * @Route("/{id}/edit", name="vote_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Vote $vote): Response
-    {
-        $form = $this->createForm(VoteType::class, $vote);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('vote_index');
-        }
-
-        return $this->render(
-            'vote/edit.html.twig',
-            [
-                'vote' => $vote,
-                'form' => $form->createView(),
             ]
         );
     }

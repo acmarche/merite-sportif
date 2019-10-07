@@ -91,6 +91,8 @@ class ClubController extends AbstractController
             $this->tokenManager->generate($user);
             $this->entityManager->flush();
 
+            $this->addFlash('success', 'Club ajouté');
+
             return $this->redirectToRoute('club_index');
         }
 
@@ -133,6 +135,8 @@ class ClubController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->flush();
+
+            $this->addFlash('success', 'Club modifié');
 
             return $this->redirectToRoute('club_index');
         }

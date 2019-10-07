@@ -28,14 +28,15 @@ class VoteType extends AbstractType
     {
         $categorie = $options['categorie'];
 
-        $builder->add(
+       $builder->add(
             'positions',
             HiddenType::class,
             [
                 'required' => false,
             ]
         );
-        $builder->add(
+
+      /*   $builder->add(
             'candidats',
             EntityType::class,
             [
@@ -51,7 +52,7 @@ class VoteType extends AbstractType
                     new VoteValidator(),
                 ],
             ]
-        );
+        );*/
 
     }
 

@@ -26,7 +26,7 @@ class VoteRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('vote')
             ->orderBy('vote.categorie', 'ASC')
             ->orderBy('vote.candidat', 'ASC')
-            ->orderBy('vote.position', 'ASC')
+            ->orderBy('vote.point', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -42,7 +42,7 @@ class VoteRepository extends ServiceEntityRepository
             ->setParameter('club', $club)
             ->orderBy('vote.categorie', 'ASC')
             ->orderBy('vote.candidat', 'ASC')
-            ->orderBy('vote.position', 'ASC')
+            ->orderBy('vote.point', 'DESC')
             ->getQuery()
             ->getResult();
 

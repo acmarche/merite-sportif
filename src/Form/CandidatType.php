@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CandidatType extends AbstractType
 {
@@ -46,6 +47,14 @@ class CandidatType extends AbstractType
                     'class' => Categorie::class,
                     'multiple' => false,
                     'expanded' => true,
+                ]
+            )
+            ->add(
+                'imageFile',
+                VichImageType::class,
+                [
+                    'required' => false,
+                    'label' => 'Image',
                 ]
             );
     }

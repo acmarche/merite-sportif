@@ -55,7 +55,7 @@ class VoteService
 
             $categorie = $data->getCategorie();
 
-            $vote = ['candidat' => $data->getCandidat(), 'position' => $data->getPosition()];
+            $vote = ['candidat' => $data->getCandidat(), 'point' => $data->getPoint()];
 
             $this->addVote($categorie, $vote);
         }
@@ -71,15 +71,15 @@ class VoteService
 
     public function isComplete(Club $club): bool
     {
+        $points = 0;
         foreach ($this->categorieRepository->findAll() as $categorie) {
             $votes = $this->voteRepository->getByClubAndCategorie($club, $categorie);
-            if (!$votes) {
-                return false;
+            foreach ($votes as $vote) {
+                $points += $vote->getPoint();
             }
         }
 
-        return true;
-
+        return $points === 9;
     }
 
     /**

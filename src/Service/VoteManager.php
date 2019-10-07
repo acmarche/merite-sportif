@@ -15,6 +15,7 @@ use App\Entity\Candidat;
 use App\Entity\Categorie;
 use App\Entity\Club;
 use App\Entity\Vote;
+use App\Repository\CandidatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class VoteManager
@@ -23,29 +24,31 @@ class VoteManager
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var CandidatRepository
+     */
+    private $candidatRepository;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, CandidatRepository $candidatRepository)
     {
         $this->entityManager = $entityManager;
+        $this->candidatRepository = $candidatRepository;
     }
 
     public function handleVote(array $data, Club $club, Categorie $categorie)
     {
-        $positions = explode('|', $data['positions']);
-        /**
-         * @var Candidat[] $candidats
-         */
-        $candidats = $data['candidats'];
-        foreach ($candidats as $candidat) {
+        foreach ($data as $idCandidat => $point) {
 
-            $vote = new Vote($categorie, $club, $candidat);
-            if (is_array($positions)) {
-                $key = array_search($candidat->getId(), $positions);
-                if ($key !== null) {
-                    $vote->setPosition($key);
-                }
+            $candidat = $this->candidatRepository->find($idCandidat);
+            if (!$candidat) {
+                continue;
             }
-            $this->entityManager->persist($vote);
+
+            if ($point > 0) {
+                $vote = new Vote($categorie, $club, $candidat, $point);
+                $this->entityManager->persist($vote);
+            }
+
         }
 
     }

@@ -48,6 +48,11 @@ class Categorie
      */
     private $votes;
 
+    /**
+     * @var bool
+     */
+    private $complete = false;
+
     public function __construct()
     {
         $this->candidats = new ArrayCollection();
@@ -57,6 +62,22 @@ class Categorie
     public function __toString()
     {
         return $this->nom;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isComplete(): bool
+    {
+        return $this->complete;
+    }
+
+    /**
+     * @param bool $complete
+     */
+    public function setComplete(bool $complete): void
+    {
+        $this->complete = $complete;
     }
 
     /**

@@ -8,14 +8,14 @@
         <thead>
         <tr>
             <th style="width: 70%;">Candidat</th>
-            <th>Position</th>
+            <th>Point(s)</th>
         </tr>
         </thead>
         <tbody>
         {% for vote in data.votes %}
             <tr>
                 <td>{{ vote.candidat }}</td>
-                <td>{{ vote.position }}</td>
+                <td>{{ vote.point }}</td>
             </tr>
         {% endfor %}
 
