@@ -150,6 +150,7 @@ class VoteController extends AbstractController
             }
 
             return $this->redirectToRoute('vote_intro');
+
         }
 
         return $this->render(
