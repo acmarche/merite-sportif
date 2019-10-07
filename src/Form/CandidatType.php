@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Candidat;
 use App\Entity\Categorie;
 use App\Entity\Sport;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -21,14 +22,14 @@ class CandidatType extends AbstractType
             ->add('prenom')
             ->add(
                 'description',
-                TextareaType::class,
+                CKEditorType::class,
                 [
 
                 ]
             )
             ->add(
                 'palmares',
-                TextareaType::class,
+                CKEditorType::class,
                 [
 
                 ]

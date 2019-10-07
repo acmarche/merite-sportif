@@ -4,7 +4,7 @@
             <h3 class="text-success">Sport</h3>
             {{ candidat.sport }}
             <h3 class="text-success">Palmarès</h3>
-            {{ candidat.palmares|nl2br }}
+            {{ candidat.palmares|raw }}
         </div>
         <div class="col-4">
             {% if candidat.imageName %}
@@ -32,7 +32,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                {{ candidat.description|nl2br }}
+                {{ candidat.description|raw }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"

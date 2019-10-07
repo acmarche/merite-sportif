@@ -2,13 +2,12 @@
     <div class="row">
         <div class="col-8">
             <p class="card-text">
-                {{ candidat.description|nl2br }}
+                {{ candidat.description|raw }}
             </p>
             <h3 class="text-success">Sport</h3>
             {{ candidat.sport }}
             <h3 class="text-success">Palmarès</h3>
-            {{ candidat.palmares|nl2br }}
-
+            {{ candidat.palmares|raw }}
             <h3 class="mt-2 text-success">Catégorie</h3>
             {{ candidat.categorie }}
             <br/>
