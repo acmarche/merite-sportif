@@ -119,7 +119,7 @@ class VoteController extends AbstractController
 
         $next = $this->categorieRepository->findNext($categorie->getOrdre());
 
-        if ($this->voteService->voteExist($club, $categorie)) {
+        if ($this->voteService->voteExist($club, $categorie) && $next !== null) {
             return $this->redirectToRoute('vote_new', ['ordre' => $next->getOrdre()]);
         }
 
@@ -140,7 +140,9 @@ class VoteController extends AbstractController
                 return $this->redirectToRoute('vote_show');
             }
 
-            return $this->redirectToRoute('vote_new', ['ordre' => $next->getOrdre()]);
+            if ($next !== null) {
+                return $this->redirectToRoute('vote_new', ['ordre' => $next->getOrdre()]);
+            }
 
         }
 

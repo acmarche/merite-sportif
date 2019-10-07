@@ -29,7 +29,7 @@ class CategorieRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findNext(int $positionCurrent): Categorie
+    public function findNext(int $positionCurrent): ?Categorie
     {
         return $this->createQueryBuilder('categorie')
             ->andWhere('categorie.ordre = :ordre')
