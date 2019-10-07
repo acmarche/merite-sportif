@@ -16,29 +16,31 @@
 
             <br/>
             <div class="alert alert-info">
-                Donnez 2 points au premier<br/>
-                Donnez 1 point au deuxième
+                <ul>
+                    <li>Attribué 3 points: 2 pour le premier, 1 pour le deuxième</li>
+                </ul>
             </div>
             <br/>
             {{ form_start(form) }}
             {{ form_errors(form) }}
 
+            {{ form_label(form.candidatures) }}
+            {{ form_errors(form.candidatures) }}
+
             {% set i = 0 %}
             <div class="card-deck">
-                {% for candidat in candidats %}
+                {% for emailField in form.candidatures %}
+                {% set candidat = emailField.vars.value.candidat %}
                 <div class="card bg-light mb-3">
                     <div class="card-header">
                         <h3>{{ candidat }}</h3>
                     </div>
                     {% include 'vote/_detail.html.twig' %}
                     <div class="card-footer">
-                        <small class="text-muted">Attribution des points</small>
-                        <label>
-                            <input type="number" min="0" max="2" name="points[{{ candidat.id }}]" value="0">
-                        </label>
+                        {{ form_errors(emailField) }}
+                        {{ form_widget(emailField) }}
                     </div>
                 </div>
-
                 {% if i == 1 %}
             </div>
             <div class="card-deck">

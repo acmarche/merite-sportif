@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Candidat;
 use App\Entity\Categorie;
 use App\Entity\Club;
+use App\Form\VotesType;
 use App\Form\VoteType;
 use App\Repository\CandidatRepository;
 use App\Repository\CategorieRepository;
@@ -116,26 +118,28 @@ class VoteController extends AbstractController
     {
         $user = $this->getUser();
         $club = $user->getClub();
-        $candidats = $categorie->getCandidats();
-        $data = [];
 
-        $next = $this->categorieRepository->findNext($categorie->getOrdre());
-
-        if ($this->voteService->voteExist($club, $categorie) && $next !== null) {
+        if ($this->voteService->voteExist($club, $categorie)) {
             $this->addFlash('warning', 'Vous avez déjà voté dans cette catégorie');
 
             return $this->redirectToRoute('vote_intro');
         }
 
-        $form = $this->createForm(VoteType::class, $data, ['categorie' => $categorie]);
+        $candidatures = [];
+        foreach ($categorie->getCandidats() as $candidature) {
+            $candidatures[] = ['candidat' => $candidature, 'point' => 0];
+        }
+
+        $data = ['candidatures' => $candidatures];
+
+        $form = $this->createForm(VotesType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $points = $request->get('points');
+            $result = $form->getData();
 
-            $this->voteManager->handleVote($points, $club, $categorie);
-
+            $this->voteManager->handleVote($result, $club, $categorie);
             $this->entityManager->flush();
             $this->addFlash('success', 'Votre vote a bien été pris en compte');
 
@@ -152,7 +156,7 @@ class VoteController extends AbstractController
             'vote/new.html.twig',
             [
                 'categorie' => $categorie,
-                'candidats' => $candidats,
+                'candidats' => $categorie->getCandidats(),
                 'form' => $form->createView(),
             ]
         );

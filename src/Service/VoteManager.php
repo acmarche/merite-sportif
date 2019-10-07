@@ -37,19 +37,15 @@ class VoteManager
 
     public function handleVote(array $data, Club $club, Categorie $categorie)
     {
-        foreach ($data as $idCandidat => $point) {
-
-            $candidat = $this->candidatRepository->find($idCandidat);
-            if (!$candidat) {
-                continue;
+        foreach ($data as $candidature) {
+            foreach ($candidature as $value) {
+                $candidat = $value['candidat'];
+                $point = $value['point'];
+                if ($point > 0) {
+                    $vote = new Vote($categorie, $club, $candidat, $point);
+                    $this->entityManager->persist($vote);
+                }
             }
-
-            if ($point > 0) {
-                $vote = new Vote($categorie, $club, $candidat, $point);
-                $this->entityManager->persist($vote);
-            }
-
         }
-
     }
 }
