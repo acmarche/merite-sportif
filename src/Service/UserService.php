@@ -42,9 +42,10 @@ class UserService
         $this->entityManager = $entityManager;
     }
 
-    public function createUser(Club $club) : User {
+    public function createUser(Club $club): User
+    {
 
-        $password = rand(9999,999999);
+        $password = rand(9999, 999999);
         $email = $club->getEmail();
         $user = new User();
         $user->setUsername($email);
@@ -58,5 +59,17 @@ class UserService
         $club->setUser($user);
 
         return $user;
+    }
+
+    public function changePasswordForAll()
+    {
+        foreach ($this->userRepository->findAll() as $user) {
+            if ($user->getUsername() === 'jkets' || $user->getUsername() === 'jfsenechal') {
+                $password = 'x';
+            }
+            $user->setPassword($this->userPasswordEncoder->encodePassword($user, $password));
+        }
+
+        $this->entityManager->flush();
     }
 }

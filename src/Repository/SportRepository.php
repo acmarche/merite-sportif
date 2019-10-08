@@ -19,6 +19,14 @@ class SportRepository extends ServiceEntityRepository
         parent::__construct($registry, Sport::class);
     }
 
+    public function getAll()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Sport[] Returns an array of Sport objects
     //  */

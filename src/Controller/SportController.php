@@ -25,7 +25,7 @@ class SportController extends AbstractController
         return $this->render(
             'sport/index.html.twig',
             [
-                'sports' => $sportRepository->findAll(),
+                'sports' => $sportRepository->getAll(),
             ]
         );
     }
