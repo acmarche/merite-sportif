@@ -141,7 +141,6 @@ class ClubController extends AbstractController
                 $user = $club->getUser();
                 if ($user) {
                     $user->setUsername($club->getEmail());
-                    $user->setEmail($club->getEmail());
                 }
             }
 
