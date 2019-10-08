@@ -25,9 +25,25 @@ class DefaultController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('default/index.html.twig', [
+        return $this->render(
+            'default/index.html.twig',
+            [
 
-        ]);
+            ]
+        );
+    }
+
+    /**
+     * @Route("/contact", name="merite_contact", methods={"GET","POST"})
+     */
+    public function contact(): Response
+    {
+        return $this->render(
+            'default/contact.html.twig',
+            [
+
+            ]
+        );
     }
 
 }

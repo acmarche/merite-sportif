@@ -7,6 +7,12 @@
 
     <img src="{{ asset('csl.jpg') }}" style="width: 150px;" alt="logo">
 
+    <p class="text-muted mt-5">
+     La Ville de Marche-en-Famenne remettra le diplôme d’élite sportif et un « passe-sport »<br />
+                        à tous les athlètes qui ont fait un podium au niveau national.<br/><br />
+                        Elle récompensera également des sportifs et des clubs par la remise du prix du mérite sportif et
+                        du challenge sportif.
+    </p>
     {% if is_granted('ROLE_MERITE_CLUB') %}
         <p class="mt-5">
         <a class="" href="{{ path('vote_show') }}">Mon vote <span class="sr-only">(current)</span></a>
