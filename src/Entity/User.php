@@ -8,11 +8,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(columns={"email"}),
  *     @ORM\UniqueConstraint(columns={"username"})
  * })
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"email"}, message="Un utilisateur a déjà cette adresse email")
+ *
  * @UniqueEntity(fields={"username"}, message="Un utilisateur a déjà ce nom d'utilisateur")
  */
 class User implements UserInterface
@@ -44,11 +43,6 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=100)
      */
     private $nom;
-
-    /**
-     * @ORM\Column(type="string", length=100, unique=true)
-     */
-    private $email;
 
     /**
      * @var Token|null $token
@@ -163,18 +157,6 @@ class User implements UserInterface
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
 
         return $this;
     }

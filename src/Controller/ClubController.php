@@ -130,15 +130,24 @@ class ClubController extends AbstractController
      */
     public function edit(Request $request, Club $club): Response
     {
+        $oldEmail = $club->getEmail();
         $form = $this->createForm(ClubType::class, $club);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $this->entityManager->flush();
+            if ($club->getEmail() !== $oldEmail) {
+                $user = $club->getUser();
+                if ($user) {
+                    $user->setUsername($club->getEmail());
+                    $user->setEmail($club->getEmail());
+                }
+            }
 
             $this->addFlash('success', 'Club modifié');
 
-            return $this->redirectToRoute('club_index');
+            //    return $this->redirectToRoute('club_index');
         }
 
         return $this->render(

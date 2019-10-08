@@ -31,12 +31,6 @@ class UserType extends AbstractType
                 ]
             )
             ->add(
-                'email',
-                EmailType::class,
-                [
-                    'required' => true,
-                ]
-            )->add(
                 'password',
                 PasswordType::class,
                 [
