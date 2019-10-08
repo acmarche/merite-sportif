@@ -28,6 +28,7 @@ class VotesType extends AbstractType
             CollectionType::class,
             [
                 'entry_type' => VoteType::class,
+                'label'=>false,
                 'constraints' => [
                     new VoteValidator(),
                 ],

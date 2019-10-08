@@ -23,38 +23,28 @@
             <br/>
             {{ form_start(form) }}
             {{ form_errors(form) }}
-
             {{ form_label(form.candidatures) }}
             {{ form_errors(form.candidatures) }}
-
-            {% set i = 0 %}
-            <div class="card-deck">
+            <div class="row">
                 {% for emailField in form.candidatures %}
-                {% set candidat = emailField.vars.value.candidat %}
-                <div class="card bg-light mb-3">
-                    <div class="card-header">
-                        <h3>{{ candidat }}</h3>
+                    <div class="col-md-6">
+                        {% set candidat = emailField.vars.value.candidat %}
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">
+                                <h3>{{ candidat }}</h3>
+                            </div>
+                            {% include 'vote/_detail.html.twig' %}
+                            <div class="card-footer">
+                                {{ form_errors(emailField) }}
+                                {{ form_widget(emailField) }}
+                            </div>
+                        </div>
                     </div>
-                    {% include 'vote/_detail.html.twig' %}
-                    <div class="card-footer">
-                        {{ form_errors(emailField) }}
-                        {{ form_widget(emailField) }}
-                    </div>
-                </div>
-                {% if i == 1 %}
-            </div>
-            <div class="card-deck">
-                {% set i = 0 %}
-                {% else %}
-                    {% set i = i + 1 %}
-                {% endif %}
                 {% else %}
                     <p class="alert alert-danger">Aucun candidats pour cette catégorie !</p>
                 {% endfor %}
             </div>
-
             <button class="btn btn-primary" type="submit"><i class="far fa-save"></i> Enregistrer mon vote</button>
-
             {{ form_end(form) }}
         </div>
     </div>
