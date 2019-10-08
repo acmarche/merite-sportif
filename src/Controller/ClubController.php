@@ -63,7 +63,7 @@ class ClubController extends AbstractController
      */
     public function index(): Response
     {
-        $clubs = $this->clubRepository->findAll();
+        $clubs = $this->clubRepository->getAll();
         $this->voteService->setIsComplete($clubs);
 
         return $this->render(
