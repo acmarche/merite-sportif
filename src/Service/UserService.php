@@ -44,10 +44,9 @@ class UserService
 
     public function createUser(Club $club) : User {
 
-        $password = rand(1,2);
+        $password = rand(9999,999999);
         $email = $club->getEmail();
         $user = new User();
-        $user->setEmail($email);
         $user->setUsername($email);
         $user->setNom($club->getNom());
         $user->setPassword($this->userPasswordEncoder->encodePassword($user, $password));
