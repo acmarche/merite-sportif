@@ -87,7 +87,7 @@ class Mailer
         $email = (new TemplatedEmail())
             ->from($data['from'])
             //->to($club->getEmail())
-            ->to('jf@marche.be')//johnny.kets@ac.marche.be
+            ->to('johnny.kets@ac.marche.be')
             //->bcc('csl@marche.be')
             ->subject($data['sujet'])
             ->text($data['texte'])
@@ -95,6 +95,7 @@ class Mailer
             ->context(
                 [
                     'club' => $club,
+                    'texte' => $data['texte'],
                     'value' => $value,
                 ]
             );
