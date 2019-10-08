@@ -32,7 +32,7 @@
                     </p>
                 </div>
                 <div class="col-sm-4 offset-md-1 py-4">
-                    <h4 class="text-white">Contact</h4>
+                    <h4 class="text-white">Menu</h4>
                     <ul class="list-unstyled">
                         <li>{% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <a href="{{ path('app_logout') }}" class="text-white" title="Se déconnecter"><i
@@ -67,36 +67,6 @@
         </div>
     </div>
 </header>
-{#
-<nav class="navbar navbar-expand-md navbar-light bg-light fixed-t2op border-bottom shadow-sm">
-    {% block brand %}
-        <i class="fas fa-home"></i> <a class="navbar-brand" href="{{ path('merite_home') }}">Mérite & Challenge Sportif</a>
-    {% endblock %}
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsleDefault"
-            aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse justify-content-md-center" id="navbarsDefault">
-        <ul class="navbar-nav mr-auto ml-auto">
-            {% block menu_top %}
-            {% endblock %}
-        </ul>
-        <ul class="navbar-nav">
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                {% block menu_user %}
-                    {% include '_menu_user.html.twig' %}
-                {% endblock %}
-            {% else %}
-                <li class="nav-item">
-                    <a href="{{ path('app_login') }}" class="nav-link" title="Me connecter"><i
-                                class="fas fa-sign-in-alt"></i></a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
-</nav>
-#}
 
 <main role="main" class="container pt-3">
 
