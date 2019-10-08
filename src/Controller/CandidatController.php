@@ -25,7 +25,7 @@ class CandidatController extends AbstractController
         return $this->render(
             'candidat/index.html.twig',
             [
-                'candidats' => $candidatRepository->findAll(),
+                'candidats' => $candidatRepository->getAll(),
             ]
         );
     }
