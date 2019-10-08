@@ -27,4 +27,14 @@ class CandidatRepository extends ServiceEntityRepository
             ->setParameter('categorie', $categorie)
             ->orderBy('candidat.nom', 'ASC');
     }
+
+    public function getByCategorie(Categorie $categorie)
+    {
+        return $this->createQueryBuilder('candidat')
+            ->andWhere('candidat.categorie = :categorie')
+            ->setParameter('categorie', $categorie)
+            ->orderBy('RAND()')
+            ->getQuery()
+            ->getResult();
+    }
 }

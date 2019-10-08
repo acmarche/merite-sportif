@@ -5,8 +5,11 @@
 
     <img src="{{ asset('marche.png') }}" style="width: 150px;" alt="logo">
 
+    <img src="{{ asset('csl.jpg') }}" style="width: 150px;" alt="logo">
 
     {% if is_granted('ROLE_MERITE_CLUB') %}
-
+        <p class="mt-5">
+        <a class="" href="{{ path('vote_show') }}">Mon vote <span class="sr-only">(current)</span></a>
+        </p>
     {% endif %}
 {% endblock %}

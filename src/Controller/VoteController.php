@@ -126,7 +126,8 @@ class VoteController extends AbstractController
         }
 
         $candidatures = [];
-        foreach ($categorie->getCandidats() as $candidature) {
+        $candidats = $this->candidatRepository->getByCategorie($categorie);
+        foreach ($candidats as $candidature) {
             $candidatures[] = ['candidat' => $candidature, 'point' => 0];
         }
 
