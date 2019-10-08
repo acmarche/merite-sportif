@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Categorie;
 use App\Form\CategorieType;
 use App\Repository\CategorieRepository;
+use App\Repository\VoteRepository;
+use App\Service\VoteService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,13 +20,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategorieController extends AbstractController
 {
     /**
+     * @var CategorieRepository
+     */
+    private $categorieRepository;
+    /**
+     * @var VoteService
+     */
+    private $voteService;
+
+    public function __construct(CategorieRepository $categorieRepository, VoteService $voteService)
+    {
+        $this->categorieRepository = $categorieRepository;
+        $this->voteService = $voteService;
+    }
+
+    /**
      * @Route("/", name="categorie_index", methods={"GET"})
      */
-    public function index(CategorieRepository $categorieRepository): Response
+    public function index(): Response
     {
-        return $this->render('categorie/index.html.twig', [
-            'categories' => $categorieRepository->findAll(),
-        ]);
+        return $this->render(
+            'categorie/index.html.twig',
+            [
+                'categories' => $this->categorieRepository->findAll(),
+            ]
+        );
     }
 
     /**
@@ -44,10 +64,13 @@ class CategorieController extends AbstractController
             return $this->redirectToRoute('categorie_index');
         }
 
-        return $this->render('categorie/new.html.twig', [
-            'categorie' => $categorie,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'categorie/new.html.twig',
+            [
+                'categorie' => $categorie,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -55,9 +78,15 @@ class CategorieController extends AbstractController
      */
     public function show(Categorie $categorie): Response
     {
-        return $this->render('categorie/show.html.twig', [
-            'categorie' => $categorie,
-        ]);
+        $votes = $this->voteService->getVotesByCategorie($categorie);
+
+        return $this->render(
+            'categorie/show.html.twig',
+            [
+                'categorie' => $categorie,
+                'votes' => $votes,
+            ]
+        );
     }
 
     /**
@@ -74,10 +103,13 @@ class CategorieController extends AbstractController
             return $this->redirectToRoute('categorie_index');
         }
 
-        return $this->render('categorie/edit.html.twig', [
-            'categorie' => $categorie,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'categorie/edit.html.twig',
+            [
+                'categorie' => $categorie,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**

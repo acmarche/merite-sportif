@@ -14,6 +14,24 @@
             <span><strong>Ordre d'affichage: </strong></span>
             {{ categorie.ordre }}
 
+            <h3 class="mt-2 text-success">Résultats des votes</h3>
+            <br/>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Candidat</th>
+                    <th>Points</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for vote in votes %}
+                    <tr>
+                        <td>{{ vote.candidat }}</td>
+                        <td>{{ vote.point }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
             <h3 class="mt-2 text-success">Candidats</h3>
             <br/>
             <ul class="list-group">

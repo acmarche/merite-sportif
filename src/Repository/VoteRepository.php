@@ -63,4 +63,17 @@ class VoteRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param Categorie $categorie
+     * @return Vote[]
+     */
+    public function getByCategorie(Categorie $categorie)
+    {
+         return $this->createQueryBuilder('vote')
+            ->andWhere('vote.categorie = :categorie')
+            ->setParameter('categorie', $categorie)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -91,4 +91,29 @@ class VoteService
             $club->setvoteIsComplete($this->isComplete($club));
         }
     }
+
+    public function getVotesByCategorie(Categorie $categorie)
+    {
+        $candidats = [];
+        $votes = $this->voteRepository->getByCategorie($categorie);
+        foreach ($votes as $vote) {
+            $candidat = $vote->getCandidat();
+            $point = $vote->getPoint();
+            if (!isset($candidats[$candidat->getId()])) {
+                $candidats[$candidat->getId()]['candidat'] = $candidat;
+                $candidats[$candidat->getId()]['point'] = $point;
+            } else {
+                $candidats[$candidat->getId()]['point'] += $point;
+            }
+        }
+
+        usort(
+            $candidats,
+            function ($a, $b) {
+                return (int)$b['point'] <=> (int)$a['point'];
+            }
+        );
+
+        return $candidats;
+    }
 }
