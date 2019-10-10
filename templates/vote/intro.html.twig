@@ -4,6 +4,10 @@
 
     {% include 'vote/_titre.html.twig' %}
 
+    <div class="alert alert-info">
+        Pour que votre soit valide, merci de voter pour chaque catégorie.
+    </div>
+    <br />
     {% for categorie in categories %}
         <div class="card bg-light mb-3">
             <div class="card-header">

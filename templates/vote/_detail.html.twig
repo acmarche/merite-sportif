@@ -9,7 +9,7 @@
         <div class="col-4">
             {% if candidat.imageName %}
                 <img src="{{ vich_uploader_asset(candidat, 'imageFile')| imagine_filter('my_heighten_filter') }}"
-                     alt="{{ candidat.nom }}"/>
+                     alt="{{ candidat.nom }}" class="img-thumbnail"/>
             {% endif %}
             <br/><br/>
             <button class="btn btn-sm btn-info" role='button' data-toggle="modal"
