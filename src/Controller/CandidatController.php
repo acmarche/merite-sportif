@@ -105,6 +105,7 @@ class CandidatController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($candidat);
             $entityManager->flush();
+            $this->addFlash('success', 'Candidat supprimé');
         }
 
         return $this->redirectToRoute('candidat_index');

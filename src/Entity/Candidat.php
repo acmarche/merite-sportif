@@ -70,16 +70,16 @@ class Candidat
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @var string
+     * @var string|null
      */
     private $imageName;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      *
-     * @var integer
+     * @var integer|null
      */
     private $imageSize;
 
@@ -251,7 +251,7 @@ class Candidat
         return $this->imageName;
     }
 
-    public function setImageName(string $imageName): self
+    public function setImageName(?string $imageName): self
     {
         $this->imageName = $imageName;
 
@@ -263,7 +263,7 @@ class Candidat
         return $this->imageSize;
     }
 
-    public function setImageSize(int $imageSize): self
+    public function setImageSize(?int $imageSize): self
     {
         $this->imageSize = $imageSize;
 
