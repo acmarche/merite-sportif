@@ -22,7 +22,8 @@
     </p>
     {% if is_granted('ROLE_MERITE_CLUB') %}
         <p class="mt-5">
-            <a class="" href="{{ path('vote_show') }}">Mon vote <span class="sr-only">(current)</span></a>
+            <a class="btn btn-primary" href="{{ path('vote_show') }}">Mon vote <span
+                        class="sr-only">(current)</span></a>
         </p>
     {% endif %}
 {% endblock %}
