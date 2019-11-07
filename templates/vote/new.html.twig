@@ -25,18 +25,18 @@
             {{ form_errors(form) }}
             {{ form_label(form.candidatures) }}
             {{ form_errors(form.candidatures) }}
-            <div class="row">
-                {% for emailField in form.candidatures %}
+            <div class="row" id="lightgallery">
+                {% for candidatField in form.candidatures %}
                     <div class="col-md-6">
-                        {% set candidat = emailField.vars.value.candidat %}
+                        {% set candidat = candidatField.vars.value.candidat %}
                         <div class="card bg-light mb-3">
                             <div class="card-header">
                                 <h3>{{ candidat }}</h3>
                             </div>
                             {% include 'vote/_detail.html.twig' %}
                             <div class="card-footer">
-                                {{ form_errors(emailField) }}
-                                {{ form_widget(emailField) }}
+                                {{ form_errors(candidatField) }}
+                                {{ form_widget(candidatField) }}
                             </div>
                         </div>
                     </div>
@@ -49,4 +49,14 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#lightgallery").lightGallery({
+                    'selector': '.card-body'
+                });
+        });
+    </script>
 {% endblock %}

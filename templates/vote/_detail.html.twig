@@ -1,4 +1,4 @@
-<div class="card-body">
+<div class="card-body" data-src="{{ vich_uploader_asset(candidat, 'imageFile') }}">
     <div class="row">
         <div class="col-8">
             <h3 class="text-success">Sport</h3>
@@ -8,8 +8,10 @@
         </div>
         <div class="col-4">
             {% if candidat.imageName %}
-                <img src="{{ vich_uploader_asset(candidat, 'imageFile')| imagine_filter('my_heighten_filter') }}"
-                     alt="{{ candidat.nom }}" class="img-thumbnail"/>
+                <a href="{{ vich_uploader_asset(candidat, 'imageFile') }}">
+                    <img src="{{ vich_uploader_asset(candidat, 'imageFile')| imagine_filter('my_heighten_filter') }}"
+                         alt="{{ candidat.nom }}" class="img-thumbnail"/>
+                </a>
             {% endif %}
             <br/><br/>
             <button class="btn btn-sm btn-info" role='button' data-toggle="modal"
