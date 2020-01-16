@@ -46,7 +46,7 @@ class TokenController extends AbstractController
     public function show(Request $request, Token $token)
     {
         if ($this->tokenManager->isExpired($token)) {
-            $this->addFlash('error', "Cette url a expirée");
+            $this->addFlash('danger', "Cette url a expirée");
 
             return $this->redirectToRoute('merite_home');
         }
@@ -54,7 +54,7 @@ class TokenController extends AbstractController
         $user = $token->getUser();
         $this->tokenManager->loginUser($request, $user, 'main');
 
-        return $this->redirectToRoute('vote_intro');
+        return $this->redirectToRoute('proposition_index');
 
     }
 

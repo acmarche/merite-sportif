@@ -12,6 +12,7 @@ namespace App\Form;
 
 use App\Entity\Candidat;
 use App\Repository\CandidatRepository;
+use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -49,11 +50,11 @@ class CandidatToNumberTransformer implements DataTransformerInterface
      * @return Candidat|null
      * @throws TransformationFailedException if object (issue) is not found.
      */
-    public function reverseTransform($issueNumber)
+    public function reverseTransform($issueNumber) : ?Candidat
     {
         // no issue number? It's optional, so that's ok
         if (!$issueNumber) {
-            return;
+            return null;
         }
 
         $issue = $this->candidatRepository->find($issueNumber);

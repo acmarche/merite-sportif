@@ -1,5 +1,8 @@
 {% if is_granted('ROLE_MERITE_CLUB') %}
     <li>
+        <a class="text-white" href="{{ path('proposition_index') }}">Proposer</a>
+    </li>
+    <li>
         <a class="text-white" href="{{ path('vote_show') }}">Mon vote</a>
     </li>
 {% endif %}

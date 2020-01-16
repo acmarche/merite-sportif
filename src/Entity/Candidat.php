@@ -45,6 +45,17 @@ class Candidat
     private $palmares;
 
     /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $add_by;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $validate;
+
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Categorie", inversedBy="candidats")
      */
     private $categorie;
@@ -92,12 +103,13 @@ class Candidat
     public function __construct()
     {
         $this->position = 0;
+        $this->validate = true;
         $this->votes = new ArrayCollection();
     }
 
     public function __toString()
     {
-        return $this->nom.' '.$this->prenom;
+        return $this->nom . ' ' . $this->prenom;
     }
 
     public function getPosition(): ?int
@@ -266,6 +278,30 @@ class Candidat
     public function setImageSize(?int $imageSize): self
     {
         $this->imageSize = $imageSize;
+
+        return $this;
+    }
+
+    public function getAddBy(): ?string
+    {
+        return $this->add_by;
+    }
+
+    public function setAddBy(?string $add_by): self
+    {
+        $this->add_by = $add_by;
+
+        return $this;
+    }
+
+    public function getValidate(): ?bool
+    {
+        return $this->validate;
+    }
+
+    public function setValidate(bool $validate): self
+    {
+        $this->validate = $validate;
 
         return $this;
     }

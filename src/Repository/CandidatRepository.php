@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Candidat;
 use App\Entity\Categorie;
+use App\Entity\Club;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -44,5 +46,19 @@ class CandidatRepository extends ServiceEntityRepository
             ->orderBy('RAND()')
             ->getQuery()
             ->getResult();
+    }
+
+    public function isAlreadyProposed(Club $club, Categorie $categorie): bool
+    {
+        $results = $this->createQueryBuilder('candidat')
+            ->andWhere('candidat.categorie = :categorie')
+            ->setParameter('categorie', $categorie)
+            ->andWhere('candidat.add_by = :user')
+            ->setParameter('user', $club->getEmail())
+            ->orderBy('RAND()')
+            ->getQuery()
+            ->getResult();
+
+        return count($results) > 0;
     }
 }

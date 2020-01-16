@@ -7,7 +7,6 @@ use App\Validator\Vote as VoteValidator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class VotesType extends AbstractType
 {
@@ -34,11 +33,6 @@ class VotesType extends AbstractType
                 ],
             ]
         );
-
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
 
     }
 }

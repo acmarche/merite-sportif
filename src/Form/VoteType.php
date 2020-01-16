@@ -2,16 +2,10 @@
 
 namespace App\Form;
 
-use App\Entity\Candidat;
 use App\Repository\CandidatRepository;
-use App\Validator\Vote as VoteValidator;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class VoteType extends AbstractType
 {
@@ -41,18 +35,8 @@ class VoteType extends AbstractType
                 [
                     'attr' => ['min' => 0, 'max' => 2],
                     'required' => false,
-                    'label'=>'Point(s) attribué(s)'
+                    'label' => 'Point(s) attribué(s)'
                 ]
             );
-        /*           'query_builder' => function (CandidatRepository $candidatRepository) use ($categorie) {
-                       return $candidatRepository->getQueryBuilder($categorie);
-                   },
-          */
-
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-
     }
 }

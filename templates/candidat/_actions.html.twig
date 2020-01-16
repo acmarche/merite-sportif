@@ -5,10 +5,12 @@
 <a href="{{ path('candidat_edit', { 'id': candidat.id }) }}" role="button"
    class="btn btn-primary"><i class="far fa-edit"></i> Editer</a>
 
-<button class="btn btn-danger" role='button' data-toggle="modal" data-target="#deleteModal"><i
-            class="fas fa-trash"></i>
-    Supprimer
-</button>
+{% if is_granted('ROLE_MERITE_ADMIN') %}
+    <button class="btn btn-danger" role='button' data-toggle="modal" data-target="#deleteModal"><i
+                class="fas fa-trash"></i>
+        Supprimer
+    </button>
+{% endif %}
 
 <br/>
 <br/>
