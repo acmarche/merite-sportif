@@ -13,10 +13,11 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-###> acmarche/grr ###
+###> acmarche/merite ###
 /.idea
 /*.sql
-###< acmarche/grr ###
+/composer.lock
+###< acmarche/merite ###
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
