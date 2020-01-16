@@ -29,7 +29,11 @@
                         </p>
 
                         {% if categorie.complete %}
-                            <p class="alert alert-info">Vous avez déjà proposé un candidat</p>
+                            <p class="alert alert-info">
+                                <a href="{{ path('proposition_show',{'id':categorie.proposition}) }}">
+                                    Vous avez déjà proposé un candidat
+                                </a>
+                            </p>
                         {% else %}
                             <h4><a href="{{ path('proposition_new',{'id':categorie.id}) }}">Proposer un candidat</a>
                             </h4>

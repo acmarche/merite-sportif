@@ -53,6 +53,11 @@ class Categorie
      */
     private $complete = false;
 
+     /**
+     * @var int
+     */
+    private $proposition = 0;
+
     public function __construct()
     {
         $this->candidats = new ArrayCollection();
@@ -78,6 +83,22 @@ class Categorie
     public function setComplete(bool $complete): void
     {
         $this->complete = $complete;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProposition(): int
+    {
+        return $this->proposition;
+    }
+
+    /**
+     * @param int $proposition
+     */
+    public function setProposition(int $proposition): void
+    {
+        $this->proposition = $proposition;
     }
 
     /**

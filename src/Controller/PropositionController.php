@@ -45,8 +45,11 @@ class PropositionController extends AbstractController
         $club = $user->getClub();
         $categories = $this->categorieRepository->findAll();
         foreach ($categories as $categorie) {
-            $done = $this->candidatRepository->isAlreadyProposed($club, $categorie);
-            $categorie->setComplete($done);
+            $candidat = $this->candidatRepository->isAlreadyProposed($club, $categorie);
+            if ($candidat) {
+                $categorie->setComplete(true);
+                $categorie->setProposition($candidat->getId());
+            }
         }
 
         return $this->render(
