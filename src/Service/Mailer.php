@@ -78,7 +78,7 @@ class Mailer
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $e) {
-            $this->flashBag->add('error', $e->getMessage());
+            $this->flashBag->add('danger', $e->getMessage());
         }
     }
 

@@ -16,6 +16,7 @@ use App\Service\VoteService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,6 +55,10 @@ class VoteController extends AbstractController
      * @var VoteManager
      */
     private $voteManager;
+    /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -62,7 +67,8 @@ class VoteController extends AbstractController
         ClubRepository $clubRepository,
         VoteRepository $voteRepository,
         VoteService $voteService,
-        VoteManager $voteManager
+        VoteManager $voteManager,
+        ParameterBagInterface $parameterBag
     ) {
         $this->categorieRepository = $categorieRepository;
         $this->candidatRepository = $candidatRepository;
@@ -71,6 +77,7 @@ class VoteController extends AbstractController
         $this->voteRepository = $voteRepository;
         $this->voteService = $voteService;
         $this->voteManager = $voteManager;
+        $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -78,6 +85,11 @@ class VoteController extends AbstractController
      */
     public function index(): Response
     {
+        if ($this->parameterBag->get('acmarche_merite.vote_activate') === false) {
+            $this->addFlash('warning', 'Les votes ne sont pas encore ouvert');
+            return $this->redirectToRoute('merite_home');
+        }
+
         $votes = $this->voteRepository->getAll();
 
         return $this->render(
@@ -116,6 +128,11 @@ class VoteController extends AbstractController
      */
     public function new(Request $request, Categorie $categorie): Response
     {
+        if ($this->parameterBag->get('acmarche_merite.vote_activate') === false) {
+            $this->addFlash('warning', 'Les votes ne sont pas encore ouvert');
+            return $this->redirectToRoute('merite_home');
+        }
+
         $user = $this->getUser();
         $club = $user->getClub();
 
@@ -137,7 +154,6 @@ class VoteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $result = $form->getData();
 
             $this->voteManager->handleVote($result, $club, $categorie);
@@ -151,7 +167,6 @@ class VoteController extends AbstractController
             }
 
             return $this->redirectToRoute('vote_intro');
-
         }
 
         return $this->render(
@@ -214,8 +229,7 @@ class VoteController extends AbstractController
      */
     public function delete(Request $request, Club $club): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$club->getId(), $request->request->get('_token'))) {
-
+        if ($this->isCsrfTokenValid('delete' . $club->getId(), $request->request->get('_token'))) {
             foreach ($club->getVotes() as $vote) {
                 $this->entityManager->remove($vote);
             }
