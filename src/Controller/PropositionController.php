@@ -135,7 +135,7 @@ class PropositionController extends AbstractController
         }
 
         return $this->render(
-            'candidat/edit.html.twig',
+            'proposition/edit.html.twig',
             [
                 'candidat' => $candidat,
                 'form' => $form->createView(),
