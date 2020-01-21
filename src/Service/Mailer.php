@@ -11,6 +11,7 @@
 namespace App\Service;
 
 
+use App\Entity\Candidat;
 use App\Entity\Club;
 use App\Repository\ClubRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -56,13 +57,13 @@ class Mailer
         foreach ($this->clubRepository->findAll() as $club) {
             $user = $club->getUser();
             if (!$user) {
-                $this->flashBag->add('error', $club->getNom().' a pas de compte user');
+                $this->flashBag->add('error', $club->getNom() . ' a pas de compte user');
                 continue;
             }
 
             $token = $user->getToken();
             if (!$token) {
-                $this->flashBag->add('error', $club->getNom().' a pas de token');
+                $this->flashBag->add('error', $club->getNom() . ' a pas de token');
                 continue;
             }
 
@@ -97,6 +98,25 @@ class Mailer
                     'club' => $club,
                     'texte' => $data['texte'],
                     'value' => $value,
+                ]
+            );
+
+        return $email;
+    }
+
+    public function newPropositionMessage(Candidat $candidat, Club $club): TemplatedEmail
+    {
+        $email = (new TemplatedEmail())
+            ->from($club->getEmail())
+            //->to($club->getEmail())
+            ->to('johnny.kets@ac.marche.be')
+            //->bcc('csl@marche.be')
+            ->subject('Une nouvelle proposition pour le mérite')
+            ->htmlTemplate('message/_proposition.html.twig')
+            ->context(
+                [
+                    'club' => $club,
+                    'candidat' => $candidat
                 ]
             );
 

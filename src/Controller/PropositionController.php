@@ -8,9 +8,11 @@ use App\Form\CandidatType;
 use App\Form\PropositionType;
 use App\Repository\CandidatRepository;
 use App\Repository\CategorieRepository;
+use App\Service\Mailer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,11 +31,25 @@ class PropositionController extends AbstractController
      * @var CandidatRepository
      */
     private $candidatRepository;
+    /**
+     * @var Mailer
+     */
+    private $mailer;
+    /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
 
-    public function __construct(CategorieRepository $categorieRepository, CandidatRepository $candidatRepository)
-    {
+    public function __construct(
+        CategorieRepository $categorieRepository,
+        CandidatRepository $candidatRepository,
+        Mailer $mailer,
+        ParameterBagInterface $parameterBag
+    ) {
         $this->categorieRepository = $categorieRepository;
         $this->candidatRepository = $candidatRepository;
+        $this->mailer = $mailer;
+        $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -66,6 +82,12 @@ class PropositionController extends AbstractController
      */
     public function new(Request $request, Categorie $categorie): Response
     {
+        if ($this->parameterBag->get('acmarche_merite.proposition_activate') == false) {
+            $this->addFlash('warning', 'Les propositions sont clôturées');
+
+            return $this->redirectToRoute('proposition_index');
+        }
+
         $user = $this->getUser();
         $club = $user->getClub();
 
@@ -90,6 +112,8 @@ class PropositionController extends AbstractController
 
             $this->addFlash('success', 'Le candidat a bien été proposé');
 
+            $this->mailer->newPropositionMessage($candidat, $club);
+
             return $this->redirectToRoute('proposition_index');
         }
 
@@ -105,7 +129,7 @@ class PropositionController extends AbstractController
 
     /**
      * @Route("/{id}", name="proposition_show", methods={"GET"})
-     * @Security("is_granted('CANDIDAT_EDIT', candidat)", statusCode=404)
+     * @Security("is_granted('CANDIDAT_EDIT', candidat)")
      */
     public function show(Candidat $candidat): Response
     {
@@ -119,10 +143,16 @@ class PropositionController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="proposition_edit", methods={"GET","POST"})
-     * @Security("is_granted('CANDIDAT_EDIT', candidat)", statusCode=404)
+     * @Security("is_granted('CANDIDAT_EDIT', candidat)")
      */
     public function edit(Request $request, Candidat $candidat): Response
     {
+        if ($this->parameterBag->get('acmarche_merite.proposition_activate') == false) {
+            $this->addFlash('warning', 'Les propositions sont clôturées');
+
+            return $this->redirectToRoute('proposition_index');
+        }
+
         $form = $this->createForm(PropositionType::class, $candidat);
         $form->handleRequest($request);
 
