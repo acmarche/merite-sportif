@@ -29,6 +29,15 @@ class PropositionType extends AbstractType
                 [
                     'attr' => ['rows' => 5]
                 ]
+            )
+            ->add(
+                'sportTemporaire',
+                TextType::class,
+                [
+                    'label' => 'Sport',
+                    'required' => true,
+                    'help' => '(Trail - Jogging, Athlétisme, Judo, Basket-ball, Tennis de table, Football,...'
+                ]
             );
     }
 

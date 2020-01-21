@@ -52,7 +52,8 @@ class CandidatType extends AbstractType
                 'sportTemporaire',
                 TextType::class,
                 [
-                    'label' => 'Sport',
+                    'label' => 'Sport temporaire',
+                    'required'=>false,
                     'help' => '(Trail - Jogging, Athlétisme, Judo, Basket-ball, Tennis de table, Football,...'
                 ]
             )
