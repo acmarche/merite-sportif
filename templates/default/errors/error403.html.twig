@@ -1,11 +1,11 @@
 {% extends 'layout_front.html.twig' %}
 
-{% block title %}{{'page.notauthorized'|trans}}{% endblock %}
+{% block title %}Accès non autorisé{% endblock %}
 
 {% block body %}
         <div class="card bg-light mb-3">
         <div class="card-header">
-            <h2>{{'page.notauthorized'|trans}}: {{ status_text }}</h2>
+            <h2>Accès non autorisé</h2>
         </div>
         <div class="card-body">
 
@@ -13,7 +13,7 @@
                 No access.
             </p>
 
-            <img src="{{ asset('totem_grr.png') }}" alt="grr">
+            <img src="{{ asset('csl.jpg') }}" alt="csl">
         </div>
     </div>
 

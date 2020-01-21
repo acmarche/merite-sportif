@@ -1,11 +1,11 @@
 {% extends 'layout_front.html.twig' %}
 
-{% block title %}An Error Occurred: {{ status_text }}{% endblock %}
+{% block title %}Une erreur est survenue: {{ status_text }}{% endblock %}
 
 {% block body %}
     <div class="card bg-light mb-3">
         <div class="card-header">
-            <h2>An Error Occurred:{{ status_code }} {{ status_text }}</h2>
+            <h2>Une erreur est survenue:{{ status_code }} {{ status_text }}</h2>
         </div>
         <div class="card-body">
 
@@ -14,7 +14,7 @@
                 We will fix it as soon as possible. Sorry for any inconvenience caused.
             </p>
 
-            <img src="{{ asset('totem_grr.png') }}" alt="grr">
+            <img src="{{ asset('csl.jpg') }}" alt="csl">
         </div>
     </div>
 {% endblock %}

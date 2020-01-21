@@ -1,19 +1,19 @@
 {% extends 'layout_front.html.twig' %}
 
-{% block title %}{{'page.notfound'|trans}}{% endblock %}
+{% block title %}Page non trouvée{% endblock %}
 
 {% block body %}
     <div class="card bg-light mb-3">
         <div class="card-header">
-            <h2>{{'page.notfound'|trans}}: {{ status_text }}</h2>
+            <h2>Page non trouvée: {{ status_text }}</h2>
         </div>
         <div class="card-body">
 
             <p>
-                <a href="{{ path('grr_home') }}">Go back to home</a>
+                <a href="{{ path('merite_home') }}">Retour à l'accueil</a>
             </p>
 
-            <img src="{{ asset('totem_grr.png') }}" alt="grr">
+            <img src="{{ asset('csl.jpg') }}" alt="marche">
         </div>
     </div>
 {% endblock %}
