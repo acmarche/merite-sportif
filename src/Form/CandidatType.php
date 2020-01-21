@@ -8,6 +8,7 @@ use App\Entity\Sport;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -17,8 +18,20 @@ class CandidatType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
+            ->add(
+                'nom',
+                TextType::class,
+                [
+                    'label' => 'Nom du candidat ou de l\'équipe, club',
+                ]
+            )
+            ->add(
+                'prenom',
+                TextType::class,
+                [
+                    'required' => false
+                ]
+            )
             ->add(
                 'description',
                 CKEditorType::class,
