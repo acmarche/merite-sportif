@@ -66,7 +66,7 @@ class Candidat
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sport", inversedBy="candidats")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $sport;
 
