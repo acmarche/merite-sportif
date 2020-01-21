@@ -54,6 +54,10 @@ class Candidat
      */
     private $validate;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $sport_temporaire;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Categorie", inversedBy="candidats")
@@ -306,5 +310,19 @@ class Candidat
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getSportTemporaire(): ?string
+    {
+        return $this->sport_temporaire;
+    }
 
+    /**
+     * @param string|null $sport_temporaire
+     */
+    public function setSportTemporaire(?string $sport_temporaire): void
+    {
+        $this->sport_temporaire = $sport_temporaire;
+    }
 }

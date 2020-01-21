@@ -2,10 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\Sport;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class PropositionType extends AbstractType
@@ -14,6 +13,8 @@ class PropositionType extends AbstractType
     {
         $builder
             ->remove('categorie')
+            ->remove('sport')
+            ->remove('validate')
             ->add(
                 'description',
                 TextareaType::class,
@@ -27,13 +28,6 @@ class PropositionType extends AbstractType
                 TextareaType::class,
                 [
                     'attr' => ['rows' => 5]
-                ]
-            )
-            ->add(
-                'sport',
-                EntityType::class,
-                [
-                    'class' => Sport::class,
                 ]
             );
     }
