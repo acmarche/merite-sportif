@@ -4,6 +4,8 @@
             <p class="card-text">
                 {{ candidat.description|raw }}
             </p>
+            <h3 class="text-success">Sport proposé</h3>
+            {{ candidat.sportTemporaire }}
             <h3 class="text-success">Sport</h3>
             {{ candidat.sport }}
             <h3 class="text-success">Palmarès</h3>
@@ -11,6 +13,8 @@
             <h3 class="mt-2 text-success">Catégorie</h3>
             {{ candidat.categorie }}
             <br/>
+            <h3 class="text-success">Proposé par</h3>
+            {{ candidat.addBy }}
         </div>
         <div class="col-4">
             {% if candidat.imageName %}
