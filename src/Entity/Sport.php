@@ -23,14 +23,8 @@ class Sport
      */
     private $nom;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Candidat", mappedBy="sport")
-     */
-    private $candidats;
-
     public function __construct()
     {
-        $this->candidats = new ArrayCollection();
     }
 
     public function __toString()
@@ -51,37 +45,6 @@ class Sport
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Candidat[]
-     */
-    public function getCandidats(): Collection
-    {
-        return $this->candidats;
-    }
-
-    public function addCandidat(Candidat $candidat): self
-    {
-        if (!$this->candidats->contains($candidat)) {
-            $this->candidats[] = $candidat;
-            $candidat->setSport($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCandidat(Candidat $candidat): self
-    {
-        if ($this->candidats->contains($candidat)) {
-            $this->candidats->removeElement($candidat);
-            // set the owning side to null (unless already changed)
-            if ($candidat->getSport() === $this) {
-                $candidat->setSport(null);
-            }
-        }
 
         return $this;
     }

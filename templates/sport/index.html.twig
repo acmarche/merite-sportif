@@ -20,7 +20,6 @@
                 <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Candidats(s)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -30,7 +29,6 @@
                             <a href="{{ path('sport_show', {'id': sport.id}) }}">
                                 {{ sport.nom }}</a>
                         </td>
-                        <td>{{ sport.candidats|length }}</td>
                     </tr>
                 {% else %}
                     <tr>

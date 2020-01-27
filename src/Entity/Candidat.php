@@ -55,20 +55,14 @@ class Candidat
     private $validate;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
-    private $sport_temporaire;
+    private $sport;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Categorie", inversedBy="candidats")
      */
     private $categorie;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Sport", inversedBy="candidats")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $sport;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="candidat", orphanRemoval=true)
@@ -250,18 +244,6 @@ class Candidat
         return $this;
     }
 
-    public function getSport(): ?Sport
-    {
-        return $this->sport;
-    }
-
-    public function setSport(?Sport $sport): self
-    {
-        $this->sport = $sport;
-
-        return $this;
-    }
-
     public function getImageName(): ?string
     {
         return $this->imageName;
@@ -313,16 +295,16 @@ class Candidat
     /**
      * @return string|null
      */
-    public function getSportTemporaire(): ?string
+    public function getSport(): ?string
     {
-        return $this->sport_temporaire;
+        return $this->sport;
     }
 
     /**
      * @param string|null $sport_temporaire
      */
-    public function setSportTemporaire(?string $sport_temporaire): void
+    public function setSport(?string $sport_temporaire): void
     {
-        $this->sport_temporaire = $sport_temporaire;
+        $this->sport = $sport_temporaire;
     }
 }

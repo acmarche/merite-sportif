@@ -59,4 +59,67 @@ class CandidatRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findAllGroupByName()
+    {
+        /**
+         * SELECT ANY_VALUE(d.id), d.nom, count(d.nom) as lignes
+         * FROM defunts d GROUP BY d.nom ORDER BY d.nom ASC.
+         */
+        $qb = $this->createQueryBuilder('d');
+        //$qb->select('ANY_VALUE(d.id) as id, d.nom, count(d.nom) as lignes');
+        $qb->select('d.id, d.nom, count(d.nom) as lignes');
+        $qb->groupBy('d.nom');
+        $qb->orderBy('d.nom');
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function getAllSports()
+    {
+        $sports = [];
+        $candidats = $this->createQueryBuilder('c')
+            //  ->select('ANY_VALUE(c.id) as id, c.sport, count(c.sport) as lignes')
+            //  ->select('c.id, c.sport, count(c.sport) as lignes')
+            // ->groupBy('c.sport')
+            ->orderBy('c.sport', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        foreach ($candidats as $candidat) {
+            $sports[$candidat->getSport()] = $candidat->getSport();
+        }
+
+        return $sports;
+    }
+
+    /**
+     * @param string $nom
+     * @param string $sport
+     * @return Candidat[]
+     */
+    public function search(?string $nom, ?string $sport, ?Categorie $categorie)
+    {
+        $qb = $this->createQueryBuilder('candidat');
+
+        if ($nom) {
+            $qb->andWhere('candidat.nom LIKE :nom OR candidat.prenom LIKE :nom')
+                ->setParameter('nom', '%' . $nom . '%');
+        }
+
+        if ($sport) {
+            $qb->andWhere('candidat.sport LIKE :sport')
+                ->setParameter('sport', '%' . $sport . '%');
+        }
+
+        if ($categorie) {
+            $qb->andWhere('candidat.categorie = :categorie')
+                ->setParameter('categorie', $categorie);
+        }
+        return $qb->orderBy('candidat.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

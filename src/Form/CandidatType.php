@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Candidat;
 use App\Entity\Categorie;
-use App\Entity\Sport;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -49,20 +48,12 @@ class CandidatType extends AbstractType
                 ]
             )
             ->add(
-                'sportTemporaire',
+                'sport',
                 TextType::class,
                 [
-                    'label' => 'Sport temporaire',
-                    'required' => false,
+                    'label' => 'Sport',
+                    'required' => true,
                     'help' => '(Trail - Jogging, Athlétisme, Judo, Basket-ball, Tennis de table, Football,...'
-                ]
-            )
-            ->add(
-                'sport',
-                EntityType::class,
-                [
-                    'placeholder' => '',
-                    'class' => Sport::class,
                 ]
             )
             ->add(

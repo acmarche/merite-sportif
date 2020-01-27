@@ -11,15 +11,6 @@
 
             {% include 'sport/_actions.html.twig' %}
 
-            <h3 class="mt-2 text-success">Candidats</h3>
-            <br/>
-            <ul class="list-group">
-                {% for candidat in sport.candidats %}
-                    <li class="list-group-item"><a
-                                href="{{ path('candidat_show', {'id': candidat.id}) }}">{{ candidat }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
         </div>
     </div>
 

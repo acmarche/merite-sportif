@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Candidat;
 use App\Form\CandidatType;
+use App\Form\SearchCandidatType;
 use App\Repository\CandidatRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,14 +19,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class CandidatController extends AbstractController
 {
     /**
-     * @Route("/", name="candidat_index", methods={"GET"})
+     * @Route("/", name="candidat_index", methods={"GET","POST"})
      */
-    public function index(CandidatRepository $candidatRepository): Response
+    public function index(Request $request, CandidatRepository $candidatRepository): Response
     {
+        $form = $this->createForm(SearchCandidatType::class, []);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $candidats = $candidatRepository->search($data['nom'], $data['sport'], $data['categorie']);
+        }
+        else {
+            $candidats = $candidatRepository->getAll();
+        }
+
         return $this->render(
             'candidat/index.html.twig',
             [
-                'candidats' => $candidatRepository->getAll(),
+                'candidats' => $candidats,
+                'form' => $form->createView()
             ]
         );
     }
@@ -101,7 +114,7 @@ class CandidatController extends AbstractController
      */
     public function delete(Request $request, Candidat $candidat): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$candidat->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $candidat->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($candidat);
             $entityManager->flush();
