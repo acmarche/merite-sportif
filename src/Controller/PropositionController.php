@@ -149,13 +149,6 @@ class PropositionController extends AbstractController
      */
     public function show(Candidat $candidat): Response
     {
-        $user = $this->getUser();
-        $club = $user->getClub();
-        try {
-            $this->mailer->propositionFinish($club);
-        } catch (TransportExceptionInterface $e) {
-            dump($e->getMessage());
-        }
         return $this->render(
             'proposition/show.html.twig',
             [
