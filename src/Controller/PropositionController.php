@@ -75,18 +75,6 @@ class PropositionController extends AbstractController
                 $categorie->setProposition($candidat->getId());
             }
         }
-         if ($this->propositionService->isComplete($club)) {
-                try {
-                    $this->mailer->propositionFinish($club);
-                } catch (TransportExceptionInterface $e) {
-                    $this->addFlash('danger', 'Le mail de résumé n\'a pas été envoyé');
-                }
-            }
-         else{
-             $this->addFlash('danger', 'Pas complet');
-         }
-
-
         return $this->render(
             'proposition/index.html.twig',
             [
