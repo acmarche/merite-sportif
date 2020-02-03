@@ -127,6 +127,7 @@ class PropositionController extends AbstractController
                 try {
                     $this->mailer->propositionFinish($club);
                 } catch (TransportExceptionInterface $e) {
+                    $this->addFlash('danger', 'Le mail de résumé n\'a pas été envoyé');
                 }
             }
 
