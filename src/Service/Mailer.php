@@ -152,6 +152,7 @@ class Mailer
             ->from('jcs@marche.be')
             //->to($club->getEmail())
             ->to('johnny.kets@ac.marche.be')
+            ->addTo('jf@marche.be')
             //->bcc('csl@marche.be')
             ->subject('Vos propositions pour le Challenge & Mérites Sportifs 2019')
             ->htmlTemplate('message/_proposition_finish.html.twig')
