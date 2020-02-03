@@ -9,12 +9,14 @@ use App\Form\PropositionType;
 use App\Repository\CandidatRepository;
 use App\Repository\CategorieRepository;
 use App\Service\Mailer;
+use App\Service\PropositionService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -39,17 +41,23 @@ class PropositionController extends AbstractController
      * @var ParameterBagInterface
      */
     private $parameterBag;
+    /**
+     * @var PropositionService
+     */
+    private $propositionService;
 
     public function __construct(
         CategorieRepository $categorieRepository,
         CandidatRepository $candidatRepository,
         Mailer $mailer,
+        PropositionService $propositionService,
         ParameterBagInterface $parameterBag
     ) {
         $this->categorieRepository = $categorieRepository;
         $this->candidatRepository = $candidatRepository;
         $this->mailer = $mailer;
         $this->parameterBag = $parameterBag;
+        $this->propositionService = $propositionService;
     }
 
     /**
@@ -67,12 +75,10 @@ class PropositionController extends AbstractController
                 $categorie->setProposition($candidat->getId());
             }
         }
-
         return $this->render(
             'proposition/index.html.twig',
             [
                 'categories' => $categories,
-                'candidats' => $candidatRepository->getAll(),
             ]
         );
     }
@@ -112,7 +118,17 @@ class PropositionController extends AbstractController
 
             $this->addFlash('success', 'Le candidat a bien été proposé');
 
-            $this->mailer->newPropositionMessage($candidat, $club);
+            try {
+                $this->mailer->newPropositionMessage($candidat, $club);
+            } catch (TransportExceptionInterface $e) {
+            }
+
+            if ($this->propositionService->isComplete($club)) {
+                try {
+                    $this->mailer->propositionFinish($club);
+                } catch (TransportExceptionInterface $e) {
+                }
+            }
 
             return $this->redirectToRoute('proposition_index');
         }
@@ -133,6 +149,13 @@ class PropositionController extends AbstractController
      */
     public function show(Candidat $candidat): Response
     {
+        $user = $this->getUser();
+        $club = $user->getClub();
+        try {
+            $this->mailer->propositionFinish($club);
+        } catch (TransportExceptionInterface $e) {
+            dump($e->getMessage());
+        }
         return $this->render(
             'proposition/show.html.twig',
             [

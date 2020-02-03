@@ -13,6 +13,7 @@ namespace App\Service;
 
 use App\Entity\Candidat;
 use App\Entity\Club;
+use App\Repository\CandidatRepository;
 use App\Repository\ClubRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -39,17 +40,29 @@ class Mailer
      * @var FlashBagInterface
      */
     private $flashBag;
+    /**
+     * @var CandidatRepository
+     */
+    private $candidatRepository;
+    /**
+     * @var PdfFactory
+     */
+    private $pdfFactory;
 
     public function __construct(
         MailerInterface $mailer,
         ClubRepository $clubRepository,
+        CandidatRepository $candidatRepository,
         RouterInterface $router,
+        PdfFactory $pdfFactory,
         FlashBagInterface $flashBag
     ) {
         $this->clubRepository = $clubRepository;
         $this->router = $router;
         $this->mailer = $mailer;
         $this->flashBag = $flashBag;
+        $this->candidatRepository = $candidatRepository;
+        $this->pdfFactory = $pdfFactory;
     }
 
     public function handle(array $data)
@@ -104,7 +117,12 @@ class Mailer
         return $email;
     }
 
-    public function newPropositionMessage(Candidat $candidat, Club $club): TemplatedEmail
+    /**
+     * @param Candidat $candidat
+     * @param Club $club
+     * @throws TransportExceptionInterface
+     */
+    public function newPropositionMessage(Candidat $candidat, Club $club)
     {
         $email = (new TemplatedEmail())
             ->from($club->getEmail())
@@ -120,6 +138,39 @@ class Mailer
                 ]
             );
 
-        return $email;
+
+        $this->mailer->send($email);
+    }
+
+    /**
+     * @param Club $club
+     * @throws TransportExceptionInterface
+     */
+    public function propositionFinish(Club $club)
+    {
+        $message = (new TemplatedEmail())
+            ->from('jcs@marche.be')
+            //->to($club->getEmail())
+            ->to('johnny.kets@ac.marche.be')
+            //->bcc('csl@marche.be')
+            ->subject('Vos propositions pour le Challenge & Mérites Sportifs 2019')
+            ->htmlTemplate('message/_proposition_finish.html.twig')
+            ->context(
+                [
+                    'club' => $club,
+                    'candidats' => $this->candidatRepository->getByClub($club)
+                ]
+            );
+
+        $pdf = $this->pdfFactory->create($club);
+
+        if ($pdf) {
+            $message->attach(
+                $pdf,
+                'propositions.pdf'
+            );
+        }
+
+        $this->mailer->send($message);
     }
 }

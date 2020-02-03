@@ -48,6 +48,16 @@ class CandidatRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getByClub(Club $club)
+    {
+        $email = $club->getEmail();
+        return $this->createQueryBuilder('candidat')
+            ->andWhere('candidat.add_by = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function isAlreadyProposed(Club $club, Categorie $categorie): ?Candidat
     {
         return $this->createQueryBuilder('candidat')
