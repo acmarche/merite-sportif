@@ -68,6 +68,7 @@ class PropositionController extends AbstractController
         $user = $this->getUser();
         $club = $user->getClub();
         $categories = $this->categorieRepository->findAll();
+
         foreach ($categories as $categorie) {
             $candidat = $this->candidatRepository->isAlreadyProposed($club, $categorie);
             if ($candidat) {
@@ -75,10 +76,14 @@ class PropositionController extends AbstractController
                 $categorie->setProposition($candidat->getId());
             }
         }
+
+        $complete = $this->propositionService->isComplete($club);
+
         return $this->render(
             'proposition/index.html.twig',
             [
                 'categories' => $categories,
+                'complete' => $complete
             ]
         );
     }
