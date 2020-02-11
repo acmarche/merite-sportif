@@ -100,9 +100,9 @@ class Mailer
     {
         $email = (new TemplatedEmail())
             ->from($data['from'])
-            //->to($club->getEmail())
+           // ->to($club->getEmail())
             ->to('johnny.kets@ac.marche.be')
-            //->bcc('csl@marche.be')
+            ->bcc('jf@marche.be')
             ->subject($data['sujet'])
             ->text($data['texte'])
             ->htmlTemplate('message/_content.html.twig')
@@ -128,7 +128,6 @@ class Mailer
             ->from($club->getEmail())
             //->to($club->getEmail())
             ->to('johnny.kets@ac.marche.be')
-            //->bcc('csl@marche.be')
             ->subject('Une nouvelle proposition pour le mérite')
             ->htmlTemplate('message/_proposition.html.twig')
             ->context(
@@ -137,7 +136,6 @@ class Mailer
                     'candidat' => $candidat
                 ]
             );
-
 
         $this->mailer->send($email);
     }
@@ -150,10 +148,10 @@ class Mailer
     {
         $message = (new TemplatedEmail())
             ->from('jcs@marche.be')
-            //->to($club->getEmail())
-            ->to('johnny.kets@ac.marche.be')
-            ->addTo('jf@marche.be')
-            //->bcc('csl@marche.be')
+            ->to($club->getEmail())
+            //->to('johnny.kets@ac.marche.be')
+            //->addTo('jf@marche.be')
+            ->bcc('johnny.kets@ac.marche.be')
             ->subject('Vos propositions pour le Challenge & Mérites Sportifs 2019')
             ->htmlTemplate('message/_proposition_finish.html.twig')
             ->context(

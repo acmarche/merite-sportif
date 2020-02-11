@@ -126,6 +126,7 @@ class PropositionController extends AbstractController
             try {
                 $this->mailer->newPropositionMessage($candidat, $club);
             } catch (TransportExceptionInterface $e) {
+
             }
 
             if ($this->propositionService->isComplete($club)) {
