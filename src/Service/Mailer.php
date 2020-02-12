@@ -100,9 +100,9 @@ class Mailer
     {
         $email = (new TemplatedEmail())
             ->from($data['from'])
-           // ->to($club->getEmail())
-            ->to('johnny.kets@ac.marche.be')
-            ->bcc('jf@marche.be')
+            ->to($club->getEmail())
+            ->bcc('johnny.kets@ac.marche.be')
+          //  ->bcc('jf@marche.be')
             ->subject($data['sujet'])
             ->text($data['texte'])
             ->htmlTemplate('message/_content.html.twig')
