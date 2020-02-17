@@ -147,7 +147,7 @@ class Mailer
     public function propositionFinish(Club $club)
     {
         $message = (new TemplatedEmail())
-            ->from('jcs@marche.be')
+            ->from('johnny.kets@ac.marche.be')
             ->to($club->getEmail())
             //->to('johnny.kets@ac.marche.be')
             //->addTo('jf@marche.be')
