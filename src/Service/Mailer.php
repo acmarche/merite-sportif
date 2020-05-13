@@ -172,4 +172,37 @@ class Mailer
 
         $this->mailer->send($message);
     }
+
+    /**
+     * @param Club $club
+     * @throws TransportExceptionInterface
+     */
+    public function votesFinish(Club $club)
+    {
+        $message = (new TemplatedEmail())
+            ->from('johnny.kets@ac.marche.be')
+            ->to($club->getEmail())
+            //->to('johnny.kets@ac.marche.be')
+            //->addTo('jf@marche.be')
+            ->bcc('johnny.kets@ac.marche.be')
+            ->subject('Vos votes pour le Challenge & Mérites Sportifs 2019')
+            ->htmlTemplate('message/_vote_finish.html.twig')
+            ->context(
+                [
+                    'club' => $club,
+                    'candidats' => $this->candidatRepository->getByClub($club)
+                ]
+            );
+
+        $pdf = $this->pdfFactory->create($club);
+
+        if ($pdf) {
+            $message->attach(
+                $pdf,
+                'propositions.pdf'
+            );
+        }
+
+        $this->mailer->send($message);
+    }
 }

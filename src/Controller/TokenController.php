@@ -54,7 +54,8 @@ class TokenController extends AbstractController
         $user = $token->getUser();
         $this->tokenManager->loginUser($request, $user, 'main');
 
-        return $this->redirectToRoute('proposition_index');
+        return $this->redirectToRoute('vote_intro');
+//        return $this->redirectToRoute('proposition_index');
 
     }
 

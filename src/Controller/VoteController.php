@@ -87,6 +87,7 @@ class VoteController extends AbstractController
     {
         if ($this->parameterBag->get('acmarche_merite.vote_activate') === false) {
             $this->addFlash('warning', 'Les votes ne sont pas encore ouvert');
+
             return $this->redirectToRoute('merite_home');
         }
 
@@ -130,6 +131,7 @@ class VoteController extends AbstractController
     {
         if ($this->parameterBag->get('acmarche_merite.vote_activate') === false) {
             $this->addFlash('warning', 'Les votes ne sont pas encore ouvert');
+
             return $this->redirectToRoute('merite_home');
         }
 
@@ -163,6 +165,8 @@ class VoteController extends AbstractController
             $isComplete = $this->voteService->isComplete($club);
 
             if ($isComplete) {
+                //todo one email
+                //   $this->mailer->propositionFinish($club);
                 return $this->redirectToRoute('vote_show');
             }
 
@@ -229,7 +233,7 @@ class VoteController extends AbstractController
      */
     public function delete(Request $request, Club $club): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $club->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$club->getId(), $request->request->get('_token'))) {
             foreach ($club->getVotes() as $vote) {
                 $this->entityManager->remove($vote);
             }
