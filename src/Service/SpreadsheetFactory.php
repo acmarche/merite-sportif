@@ -28,7 +28,8 @@ class SpreadsheetFactory
             ->setCellValue('A'.$c, 'Candidat')
             ->setCellValue('B'.$c, 'Club')
             ->setCellValue('C'.$c, 'Catégorie')
-            ->setCellValue('D'.$c, 'Points');
+            ->setCellValue('D'.$c, 'Points')
+            ->setCellValue('E'.$c, 'Date');
 
         $ligne = 2;
 
@@ -41,6 +42,8 @@ class SpreadsheetFactory
             $sheet->setCellValue($colonne.$ligne, $vote->getCategorie());
             $colonne++;
             $sheet->setCellValue($colonne.$ligne, $vote->getPoint());
+            $colonne++;
+            $sheet->setCellValue($colonne.$ligne, $vote->getCreatedAt()->format('d-m-Y H:i'));
             ++$ligne;
         }
 
