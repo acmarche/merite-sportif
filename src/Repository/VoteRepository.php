@@ -24,6 +24,10 @@ class VoteRepository extends ServiceEntityRepository
     public function getAll()
     {
         return $this->createQueryBuilder('vote')
+            ->leftJoin('vote.candidat', 'candidat', 'WITH')
+            ->leftJoin('vote.club', 'club', 'WITH')
+            ->leftJoin('vote.categorie', 'categorie', 'WITH')
+            ->addSelect('candidat', 'club', 'categorie')
             ->orderBy('vote.categorie', 'ASC')
             ->orderBy('vote.candidat', 'ASC')
             ->orderBy('vote.point', 'DESC')
@@ -45,7 +49,6 @@ class VoteRepository extends ServiceEntityRepository
             ->orderBy('vote.point', 'DESC')
             ->getQuery()
             ->getResult();
-
     }
 
     /**
@@ -70,7 +73,7 @@ class VoteRepository extends ServiceEntityRepository
      */
     public function getByCategorie(Categorie $categorie)
     {
-         return $this->createQueryBuilder('vote')
+        return $this->createQueryBuilder('vote')
             ->andWhere('vote.categorie = :categorie')
             ->setParameter('categorie', $categorie)
             ->getQuery()
