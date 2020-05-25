@@ -33,7 +33,7 @@ class TokenController extends AbstractController
      */
     public function index()
     {
-        $this->tokenManager->createForAllUsers();
+      //  $this->tokenManager->createForAllUsers();
         $this->addFlash('success', 'Les tokens ont bien été générés');
 
         return $this->redirectToRoute('merite_user_index');
