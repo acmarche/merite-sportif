@@ -1,7 +1,7 @@
 {% extends '@AcMarcheMeriteSportif/layout_front.html.twig' %}
 
 {% block title %}
-    {{ status_text }}
+    Page non trouvée
 {% endblock %}
 
 {% block body -%}
@@ -9,11 +9,9 @@
         <h3 class="card-header">Page non trouvée</h3>
         <div class="card-body">
 
-            <div class="alert alert-danger">
+            <p>La page que vous recherchez n'existe pas ou a été déplacée.</p>
 
-                {{ exception.message|nl2br |trans }}
-
-            </div>
+            <a href="{{ path('merite_home') }}" class="btn btn-primary">Retour à l'accueil</a>
 
         </div>
     </div>
