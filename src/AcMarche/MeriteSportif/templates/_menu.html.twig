@@ -1,0 +1,72 @@
+{% set action = app.request.attributes.get("_route") %}
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    {% if is_granted('ROLE_MERITE_CLUB') %}
+        {% if setting.mode == 'Proposition' %}
+            <li class="nav-item">
+                <a href="{{ path('proposition_index') }}" class="nav-link">
+                    <i class="ti ti-pencil"></i> Proposer des candidats</a>
+            </li>
+        {% endif %}
+        {% if setting.mode == 'Vote' %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('vote_show') }}"> <i class="ti ti-pencil"></i> Mon vote</a>
+            </li>
+        {% endif %}
+    {% endif %}
+
+    {% if is_granted('ROLE_MERITE_ADMIN') %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                Administration
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('merite_resultat') }}">Résultats</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('candidat_index') }}">Les candidats</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('club_index') }}">Les clubs</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('categorie_index') }}">Les catégories</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('merite_user_index') }}">Les utilisateurs</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('merite_message_index') }}">Envoie des mails</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('setting_index') }}">Paramètres</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{{ path('merite_token_create') }}">
+                        Générer les tokens</a>
+                </li>
+            </ul>
+        </li>
+    {% endif %}
+</ul>
+
+<ul class="navbar-nav mb-2 mb-lg-0">
+    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+        <li class="nav-item">
+            <a href="{{ path('app_login') }}" class="nav-link"><i class="ti ti-login-2"></i>
+                Se connecter</a>
+        </li>
+    {% else %}
+        <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link"><i class="ti ti-logout-2"></i>
+                Déconnexion</a>
+        </li>
+    {% endif %}
+</ul>

@@ -1,0 +1,37 @@
+{% extends '@AcMarcheMeriteSportif/layout_front.html.twig' %}
+
+{% block title %}{{ user }}{% endblock %}
+
+{% block body %}
+
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h2>{{ user.nom }}</h2>
+        </div>
+        <div class="card-body">
+            {% include '@AcMarcheMeriteSportif/user/_actions.html.twig' %}
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Email</th>
+                    <td>{{ user.userIdentifier }}</td>
+                </tr>
+                <tr>
+                    <th>Club lié</th>
+                    <td>
+                        {% if user.club %}
+                            <a href="{{ path('club_show', {'id': user.club.id}) }}"> {{ user.club }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            <div class="alert alert-info">
+                Le compte utilisateur ne sert qu'en interne.<br/>
+                Le club doit utiliser son lien de vote pour être identifié
+            </div>
+
+        </div>
+    </div>
+
+    {% include '@AcMarcheMeriteSportif/user/_delete_form.html.twig' %}
+{% endblock %}

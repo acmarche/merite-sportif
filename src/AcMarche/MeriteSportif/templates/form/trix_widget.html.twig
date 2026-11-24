@@ -1,0 +1,4 @@
+{% block trix_widget %}
+    <input type="hidden" {{ block('widget_attributes') }} value="{{ value }}">
+    <trix-editor input="{{ id }}" class="trix-content form-control{{ not valid ? ' is-invalid' }}"></trix-editor>
+{% endblock %}

@@ -1,0 +1,47 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20261030133741 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return 'DBAL 4 upgrade: drop DC2Type column comments, update messenger_messages index';
+    }
+
+    public function up(Schema $schema): void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE candidat CHANGE uuid uuid BINARY(16) NOT NULL');
+        $this->addSql('ALTER TABLE setting CHANGE emails emails JSON NOT NULL');
+        $this->addSql('ALTER TABLE token CHANGE uuid uuid BINARY(16) NOT NULL');
+        $this->addSql('ALTER TABLE user CHANGE roles roles JSON NOT NULL');
+        $this->addSql('DROP INDEX IDX_75EA56E016BA31DB ON messenger_messages');
+        $this->addSql('DROP INDEX IDX_75EA56E0E3BD61CE ON messenger_messages');
+        $this->addSql('DROP INDEX IDX_75EA56E0FB7336F0 ON messenger_messages');
+        $this->addSql('ALTER TABLE messenger_messages CHANGE created_at created_at DATETIME NOT NULL, CHANGE available_at available_at DATETIME NOT NULL, CHANGE delivered_at delivered_at DATETIME DEFAULT NULL');
+        $this->addSql('CREATE INDEX IDX_75EA56E0FB7336F0E3BD61CE16BA31DBBF396750 ON messenger_messages (queue_name, available_at, delivered_at, id)');
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE candidat CHANGE uuid uuid BINARY(16) NOT NULL COMMENT \'(DC2Type:uuid)\'');
+        $this->addSql('DROP INDEX IDX_75EA56E0FB7336F0E3BD61CE16BA31DBBF396750 ON messenger_messages');
+        $this->addSql('ALTER TABLE messenger_messages CHANGE created_at created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', CHANGE available_at available_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', CHANGE delivered_at delivered_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('CREATE INDEX IDX_75EA56E016BA31DB ON messenger_messages (delivered_at)');
+        $this->addSql('CREATE INDEX IDX_75EA56E0E3BD61CE ON messenger_messages (available_at)');
+        $this->addSql('CREATE INDEX IDX_75EA56E0FB7336F0 ON messenger_messages (queue_name)');
+        $this->addSql('ALTER TABLE setting CHANGE emails emails JSON NOT NULL COMMENT \'(DC2Type:json)\'');
+        $this->addSql('ALTER TABLE token CHANGE uuid uuid BINARY(16) NOT NULL COMMENT \'(DC2Type:uuid)\'');
+        $this->addSql('ALTER TABLE user CHANGE roles roles JSON NOT NULL COMMENT \'(DC2Type:json)\'');
+    }
+}

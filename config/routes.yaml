@@ -1,0 +1,3 @@
+merite:
+    resource: ../src/AcMarche/MeriteSportif/src/Controller/
+    type:     attribute

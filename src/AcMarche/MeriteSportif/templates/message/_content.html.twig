@@ -1,0 +1,12 @@
+{{ texte|nl2br }}
+
+<br/><br/>
+
+<a href="{{ url('merite_token_show',{'value':value}) }}">
+    {% if setting.mode == 'Vote' %}
+        Voter pour les candidats
+    {% else %}
+        Proposer des candidats
+    {% endif %}
+</a>
+<br/><br/>
