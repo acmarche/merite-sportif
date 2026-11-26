@@ -24,7 +24,7 @@ class DefaultController extends AbstractController
         private readonly SpreadsheetFactory $spreadsheetFactory,
     ) {}
 
-    #[Route(path: '/', name: 'merite_home', methods: ['GET'])]
+    #[Route(path: '/', name: 'merite_home', methods: ['GET','POST'])]
     public function index(): Response
     {
         return $this->render(
